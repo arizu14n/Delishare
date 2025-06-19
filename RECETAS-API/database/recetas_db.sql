@@ -1,9 +1,6 @@
--- Base de datos para el sistema de recetas
 CREATE DATABASE recetas_cocina;
 USE recetas_cocina;
 
-
--- Tabla de categorías
 CREATE TABLE categorias (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -11,15 +8,13 @@ CREATE TABLE categorias (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
--- Tabla de recetas
 CREATE TABLE recetas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(200) NOT NULL,
     descripcion TEXT,
     ingredientes TEXT NOT NULL,
     instrucciones TEXT NOT NULL,
-    tiempo_preparacion INT, -- en minutos
+    tiempo_preparacion INT, 
     porciones INT,
     dificultad ENUM('Fácil', 'Intermedio', 'Difícil') DEFAULT 'Fácil',
     categoria_id INT,
@@ -30,8 +25,6 @@ CREATE TABLE recetas (
     FOREIGN KEY (categoria_id) REFERENCES categorias(id)
 );
 
-
--- Tabla de valoraciones
 CREATE TABLE valoraciones (
     id INT AUTO_INCREMENT PRIMARY KEY,
     receta_id INT,
@@ -42,8 +35,6 @@ CREATE TABLE valoraciones (
     FOREIGN KEY (receta_id) REFERENCES recetas(id) ON DELETE CASCADE
 );
 
-
--- Insertar categorías iniciales
 INSERT INTO categorias (nombre, descripcion) VALUES
 ('Desayunos', 'Recetas para comenzar el día'),
 ('Almuerzos', 'Comidas principales del mediodía'),
@@ -54,14 +45,11 @@ INSERT INTO categorias (nombre, descripcion) VALUES
 ('Vegetarianas', 'Recetas sin carne'),
 ('Veganas', 'Recetas completamente vegetales');
 
-
--- Insertar recetas de ejemplo
 INSERT INTO recetas (titulo, descripcion, ingredientes, instrucciones, tiempo_preparacion, porciones, dificultad, categoria_id, autor) VALUES
 ('Pancakes Esponjosos', 'Deliciosos pancakes perfectos para el desayuno',
 '2 tazas de harina\n1 taza de leche\n2 huevos\n2 cucharadas de azúcar\n1 cucharadita de polvo de hornear\nPizca de sal\nMantequilla para cocinar',
 '1. Mezclar ingredientes secos\n2. Batir huevos con leche\n3. Combinar todo hasta obtener masa homogénea\n4. Cocinar en sartén caliente\n5. Servir calientes',
 20, 4, 'Fácil', 1, 'Chef María'),
-
 
 ('Ensalada César', 'Clásica ensalada con aderezo casero',
 'Lechuga romana\nPan tostado\nQueso parmesano\nPollo a la plancha\nAceite de oliva\nLimón\nAjo\nMostaza\nSal y pimienta',
