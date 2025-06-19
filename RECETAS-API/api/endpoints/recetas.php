@@ -81,6 +81,8 @@ switch($method) {
                         "id" => $id,
                         "titulo" => $titulo,
                         "descripcion" => $descripcion,
+                        "ingredientes" => $ingredientes,
+                        "instrucciones" => $instrucciones, 
                         "tiempo_preparacion" => $tiempo_preparacion,
                         "porciones" => $porciones,
                         "dificultad" => $dificultad,
