@@ -1,0 +1,23 @@
+/* Filtros */
+.filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.filter-select {
+  padding: 0.8rem 1.5rem;
+  border: 2px solid var(--gray-light);
+  border-radius: 25px;
+  background-color: var(--white);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+}
