@@ -439,3 +439,99 @@ async function handleSearch() {
   }
 }
 
+// Abrir modal para añadir nueva receta
+function openAddRecipeModal() {
+  if (currentUser && currentUser.tipo_suscripcion === "premium" && currentUser.suscripcion_activa) {
+    document.getElementById("addRecipeModal").style.display = "block"
+    document.getElementById("addRecipeForm").reset() 
+    populateAddRecipeCategorySelect(); 
+    const recipeAuthorInput = document.getElementById("recipeAuthor")
+    const recipeIsPremiumCheckbox = document.getElementById("recipeIsPremium")
+
+    if (recipeAuthorInput && currentUser && currentUser.nombre) {
+      recipeAuthorInput.value = currentUser.nombre; 
+    }
+
+    if (recipeIsPremiumCheckbox && currentUser && currentUser.tipo_suscripcion === "premium" && currentUser.suscripcion_activa) {
+      recipeIsPremiumCheckbox.checked = true;
+    } else {
+      recipeIsPremiumCheckbox.checked = false; 
+    }
+
+  } else {
+    showError("Debes ser usuario Premium para agregar recetas.")
+  }
+}
+
+// Cerrar modal para añadir nueva receta
+function closeAddRecipeModal() {
+  document.getElementById("addRecipeModal").style.display = "none"
+}
+
+// Enviar nueva receta
+async function submitNewRecipe(event) {
+  event.preventDefault()
+
+  const recipeTitle = document.getElementById("recipeTitle").value.trim()
+  const recipeDescription = document.getElementById("recipeDescription").value.trim()
+  const recipeIngredients = document.getElementById("recipeIngredients").value.trim()
+  const recipeInstructions = document.getElementById("recipeInstructions").value.trim()
+  const recipePrepTime = document.getElementById("recipePrepTime").value.trim()
+  const recipeServings = document.getElementById("recipeServings").value.trim()
+  const recipeDifficulty = document.getElementById("recipeDifficulty").value
+  const recipeCategory = document.getElementById("recipeCategory").value
+  const recipeImageUrl = document.getElementById("recipeImageUrl").value.trim()
+  const recipeAuthor = document.getElementById("recipeAuthor").value.trim()
+  const recipeIsPremium = document.getElementById("recipeIsPremium").checked
+
+  if (!recipeTitle || !recipeIngredients || !recipeInstructions || !recipePrepTime || !recipeServings || !recipeAuthor) {
+    showError("Por favor, completa todos los campos obligatorios.")
+    return
+  }
+
+  const newRecipeData = {
+    titulo: recipeTitle,
+    descripcion: recipeDescription,
+    ingredientes: recipeIngredients,
+    instrucciones: recipeInstructions,
+    tiempo_preparacion: parseInt(recipePrepTime),
+    porciones: parseInt(recipeServings),
+    dificultad: recipeDifficulty,
+    categoria_id: parseInt(recipeCategory),
+    imagen_url: recipeImageUrl,
+    autor: recipeAuthor,
+    es_premium: recipeIsPremium ? 1 : 0, 
+  }
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/recetas.php`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newRecipeData),
+    })
+
+    if (response.ok) {  
+      const result = await response.json(); 
+      console.log("Respuesta del servidor:", result); 
+
+      showSuccess("¡Nueva receta guardada!") 
+      document.getElementById("addRecipeForm").reset() 
+      closeAddRecipeModal() 
+      await loadRecipes() 
+    } else {
+      const errorResult = await response.json();
+      showError(errorResult.message || "Error al agregar la receta. Por favor, inténtalo de nuevo.")
+    }
+  } catch (error) {
+    console.error("Error al enviar nueva receta:", error)
+    showError("Error de conexión al agregar la receta.")
+  }
+}
+
+// Hacer funciones globales
+window.showRecipeDetails = showRecipeDetails
+window.showError = showError // Make showError function global
+window.openAddRecipeModal = openAddRecipeModal
+window.closeAddRecipeModal = closeAddRecipeModal
