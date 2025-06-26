@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Delishare</title>
+    <link rel="stylesheet" href="css/login.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <a href="inicio.html" class="back-link">
+        <i class="fas fa-arrow-left"></i>
+        Volver al inicio
+    </a>
+
+    <div class="auth-page">
+        <div class="auth-container">
+            <div id="overlay" style="display:none;">
+                <div class="loader-message">Iniciando sesión...</div>
+            </div>
+            <div class="auth-logo">
+                <img src="Imagenes/Logo.png" alt="">
+            </div>
+            <h1 class="auth-title">Iniciar Sesión</h1>
+            <p class="auth-subtitle">Accede a tu cuenta para disfrutar de todas las recetas</p>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Contraseña</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn-primary btn-large">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Iniciar Sesión
+                </button>
+            </form>
+
+            <p class="modal-footer" style="margin-top: 2rem;">
+                ¿No tenés una cuenta aún? <a href="registrar.html">Registrate</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="js/shared.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+
+</html>
