@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delishare</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/recetas.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <h1 class="logo">
+                    <a href="inicio.html" class="logo-link">
+                        <img src="Imagenes/Logo.png" alt="Logo Recetas Premium">
+                    </a>
+                    Delishare
+                </h1>
+                <div class="nav-menu">
+                    <a href="inicio.html" class="nav-link">Inicio</a>
+                    <a href="recetas.html" class="nav-link active">Recetas</a>
+                    <a href="suscripcion.html" class="nav-link">Suscripción</a>  
+                    <div class="auth-buttons" id="authButtons">
+                        <button class="btn-login" onclick="window.location.href='login.html'">Iniciar Sesión</button>
+                        <button class="btn-register"
+                            onclick="window.location.href='registrar.html'">Registrarse</button>
+                    </div>                  
+                    <div class="user-menu" id="userMenu" style="display: none;">
+                        <span class="user-name" id="userName"></span>
+                        <span class="user-badge" id="userBadge"></span>
+                        <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <!-- Sección de Recetas -->
+        <section class="recipes-section">
+            <div class="container">
+                <h2 class="section-title">Nuestras Recetas</h2>
+                <!-- Barra de búsqueda -->
+                <div class="search-container" style="margin-bottom: 2rem;">
+                    <input type="text" id="searchInput" placeholder="Buscar recetas...">
+                    <button id="searchBtn" class="btn-primary">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <!-- Filtros -->
+                <div class="filters">
+                    <select id="categoryFilter" class="filter-select">
+                        <option value="">Todas las categorías</option>
+                    </select>
+                    <select id="difficultyFilter" class="filter-select">
+                        <option value="">Todas las dificultades</option>
+                        <option value="Fácil">Fácil</option>
+                        <option value="Intermedio">Intermedio</option>
+                        <option value="Difícil">Difícil</option>
+                    </select>
+                    <select id="typeFilter" class="filter-select">
+                        <option value="">Todas las recetas</option>
+                        <option value="gratuitas">Solo gratuitas</option>
+                        <option value="premium">Solo premium</option>
+                    </select>
+                </div>
+                <!-- Grid de Recetas -->
+                <div id="recipesGrid" class="recipes-grid">
+                    <div class="loading">
+                        Cargando recetas...
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal para ver receta completa -->
+    <div id="recipeModal" class="modal">
+        <div class="modal-content recipe-modal-content">
+            <span class="close" onclick="closeModal('recipeModal')">&times;</span>
+            <div id="modalContent">
+                
+            </div>
+        </div>
+    </div>
+
+    <div id="addRecipeModal" class="modal">
+        <div class="modal-content add-recipe-modal-content">
+            <span class="close" onclick="closeModal('addRecipeModal')">&times;</span>
+            <h2>Agregar Nueva Receta</h2>
+            <form id="addRecipeForm">
+                <div class="form-group">
+                    <label for="recipeTitle">Título de la Receta:</label>
+                    <input type="text" id="recipeTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="recipeDescription">Descripción:</label>
+                    <textarea id="recipeDescription" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="recipeIngredients">Ingredientes (uno por línea):</label>
+                    <textarea id="recipeIngredients" rows="6" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="recipeInstructions">Instrucciones (un paso por línea):</label>
+                    <textarea id="recipeInstructions" rows="8" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="recipePrepTime">Tiempo de Preparación (minutos):</label>
+                    <input type="number" id="recipePrepTime" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="recipeServings">Porciones:</label>
+                    <input type="number" id="recipeServings" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="recipeDifficulty">Dificultad:</label>
+                    <select id="recipeDifficulty" required>
+                        <option value="Fácil">Fácil</option>
+                        <option value="Intermedio">Intermedio</option>
+                        <option value="Difícil">Difícil</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="recipeCategory">Categoría:</label>
+                    <select id="recipeCategory" required>
+                        </select>
+                </div>
+                <div class="form-group">
+                    <label for="recipeImageUrl">URL de la Imagen:</label>
+                    <input type="url" id="recipeImageUrl">
+                </div>
+                <div class="form-group">
+                    <label for="recipeAuthor">Autor:</label>
+                    <input type="text" id="recipeAuthor" required>
+                </div>
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="recipeIsPremium">
+                    <label for="recipeIsPremium">Marcar como Premium</label>
+                </div>
+                <button type="submit" class="btn-primary">Agregar Receta</button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Delishare</h4>
+                    <p>Tu cocina, nuestros secretos. Descubrí el mundo de la gastronomía profesional.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Enlaces</h4>
+                    <a href="inicio.html">Inicio</a>
+                    <a href="recetas.html">Recetas</a>
+                    <a href="suscripcion.html">Suscripción</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Soporte</h4>
+                    <a href="#">Ayuda</a>
+                    <a href="#">Contacto</a>
+                    <a href="#">Términos</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Delishare. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="js/shared.js"></script>
+    <script src="js/recetas.js"></script>
+</body>
+
+</html>

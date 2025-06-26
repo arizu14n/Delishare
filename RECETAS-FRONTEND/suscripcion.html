@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suscripción - Delishare</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <h1 class="logo">
+                    <a href="inicio.html" class="logo-link">
+                        <img src="Imagenes/Logo.png" alt="Logo Recetas Premium">
+                    </a>
+                    Delishare
+                </h1>
+                <div class="nav-menu">
+                    <a href="inicio.html" class="nav-link">Inicio</a>
+                    <a href="recetas.html" class="nav-link">Recetas</a>
+                    <a href="suscripcion.html" class="nav-link active">Suscripción</a>
+                    <div class="auth-buttons" id="authButtons">
+                        <button class="btn-login" onclick="window.location.href='login.html'">Iniciar Sesión</button>
+                        <button class="btn-register"
+                            onclick="window.location.href='registrar.html'">Registrarse</button>
+                    </div>
+
+                    <div class="user-menu" id="userMenu" style="display: none;">
+                        <span class="user-name" id="userName"></span>
+                        <span class="user-badge" id="userBadge"></span>
+                        <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Sección de Suscripción -->
+        <section class="subscription-section">
+            <div class="container">
+                <h2 class="section-title">Planes de Suscripción</h2>
+                <p class="subscription-intro">Accede a todas las preparaciones completas paso a paso y contenido exclusivo</p>
+                <div class="plans-grid">
+                    <div class="plan-card">
+                        <div class="plan-header">
+                            <h3>Gratuito</h3>
+                            <div class="plan-price">$0<span>/mes</span></div>
+                        </div>
+                        <div class="plan-features">
+                            <div class="feature"><i class="fas fa-check"></i> Ver ingredientes completos</div>
+                            <div class="feature"><i class="fas fa-check"></i> Primeros 2 pasos de preparación</div>
+                            <div class="feature"><i class="fas fa-times"></i> Preparación completa</div>
+                            <div class="feature"><i class="fas fa-times"></i> Recetas premium</div>
+                        </div>
+                        <button class="btn-plan current" id="freeButton">Plan Actual</button>
+                    </div>
+
+                    <div class="plan-card featured">
+                        <div class="plan-badge">Más Popular</div>
+                        <div class="plan-header">
+                            <h3>Premium Mensual</h3>
+                            <div class="plan-price">$9.99<span>/mes</span></div>
+                        </div>
+                        <div class="plan-features">
+                            <div class="feature"><i class="fas fa-check"></i> Todo lo gratuito</div>
+                            <div class="feature"><i class="fas fa-check"></i> Preparaciones completas paso a paso</div>
+                            <div class="feature"><i class="fas fa-check"></i> Recetas premium exclusivas</div>
+                            <div class="feature"><i class="fas fa-check"></i> Sin anuncios</div>
+                        </div>
+                        <button class="btn-plan premium" id="monthlyButton" >Suscribirse
+                            Ahora</button>
+                    </div>
+
+                    <div class="plan-card">
+                        <div class="plan-header">
+                            <h3>Premium Anual</h3>
+                            <div class="plan-price">$79.99<span>/año</span></div>
+                            <div class="plan-savings">Ahorra 33%</div>
+                        </div>
+                        <div class="plan-features">
+                            <div class="feature"><i class="fas fa-check"></i> Todo lo premium mensual</div>
+                            <div class="feature"><i class="fas fa-check"></i> Acceso prioritario a nuevas recetas</div>
+                            <div class="feature"><i class="fas fa-check"></i> Recetas exclusivas de temporada</div>
+                            <div class="feature"><i class="fas fa-check"></i> Soporte premium 24/7</div>
+                        </div>
+                        <button class="btn-plan premium" id="annualButton" >Suscribirse
+                            Anual</button>
+                    </div>
+                </div>
+
+                <!-- Información adicional -->
+                <div
+                    style="text-align: center; margin-top: 3rem; padding: 2rem; background: var(--light-color); border-radius: 15px;">
+                    <h3 style="color: var(--secondary-color); margin-bottom: 1rem;">
+                        <i class="fas fa-shield-alt"></i> Garantía de Satisfacción
+                    </h3>
+                    <p style="color: var(--gray-dark); margin-bottom: 1rem;">
+                        Probá nuestro servicio premium sin riesgo. Si no estás satisfecho,
+                        podes cancelar en cualquier momento.
+                    </p>
+                    <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-top: 2rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-check-circle" style="color: var(--success-color);"></i>
+                            <span>Cancela cuando quieras</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-check-circle" style="color: var(--success-color);"></i>
+                            <span>Sin compromisos</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-check-circle" style="color: var(--success-color);"></i>
+                            <span>Soporte 24/7</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Delishare</h4>
+                    <p>Tu cocina, nuestros secretos. Descubrí el mundo de la gastronomía profesional.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Enlaces</h4>
+                    <a href="inicio.html">Inicio</a>
+                    <a href="recetas.html">Recetas</a>
+                    <a href="suscripcion.html">Suscripción</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Soporte</h4>
+                    <a href="#">Ayuda</a>
+                    <a href="#">Contacto</a>
+                    <a href="#">Términos</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Delishare. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/shared.js"></script>
+    <script src="js/suscripcion.js"></script>
+</body>
+
+</html>
