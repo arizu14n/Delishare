@@ -258,7 +258,7 @@ body {
 }
 
 .btn-secondary:hover {
-  background: var(--dark-green);
+  background: #00a085;
   transform: translateY(-2px);
   box-shadow: var(--shadow-hover);
 }
@@ -290,6 +290,53 @@ body {
   font-size: 1.1rem;
 }
 
+.btn-plan {
+  width: 100%;
+  padding: 1rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-plan.current {
+  background: var(--gray-light);
+  color: var(--gray-dark);
+  cursor: not-allowed;
+}
+
+.btn-plan.premium {
+  background: var(--gradient-premium);
+  color: var(--white);
+}
+
+.btn-plan.premium:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.btn-premium {
+  background: var(--gradient-premium);
+  color: var(--white);
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-premium:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
 /* Acciones del Hero */
 .hero-actions {
   display: flex;
@@ -299,3 +346,32 @@ body {
   flex-wrap: wrap;
 }
 
+/* Estadísticas */
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 2rem;
+  max-width: 600px;
+  margin: 0 auto 4rem auto;
+  padding: 2rem;
+  background: var(--white);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--secondary-color);
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  font-size: 1rem;
+  color: var(--gray-dark);
+  font-weight: 500;
+}

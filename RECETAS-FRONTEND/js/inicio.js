@@ -44,3 +44,25 @@ function setupHomeEventListeners() {
     });
   }
 }
+
+// Actualizar estadísticas
+async function updateStats() {
+  try {
+    // Cargar recetas para contar
+    const response = await fetch(`${API_BASE_URL}/recetas.php`);
+    const recipes = await response.json();
+
+    const totalRecipesEl = document.getElementById("totalRecipes");
+    const totalCategoriesEl = document.getElementById("totalCategories");
+
+    if (totalRecipesEl) {
+      totalRecipesEl.textContent = Array.isArray(recipes) ? recipes.length : 0;
+    }
+
+    if (totalCategoriesEl) {
+      totalCategoriesEl.textContent = allCategories.length;
+    }
+  } catch (error) {
+    console.error("Error al actualizar estadísticas:", error);
+  }
+}
