@@ -36,6 +36,44 @@
             </div>
         </nav>
     </header>
+    <main>
+        <!-- Sección de Recetas -->
+        <section class="recipes-section">
+            <div class="container">
+                <h2 class="section-title">Nuestras Recetas</h2>
+                <!-- Barra de búsqueda -->
+                <div class="search-container" style="margin-bottom: 2rem;">
+                    <input type="text" id="searchInput" placeholder="Buscar recetas...">
+                    <button id="searchBtn" class="btn-primary">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <!-- Filtros -->
+                <div class="filters">
+                    <select id="categoryFilter" class="filter-select">
+                        <option value="">Todas las categorías</option>
+                    </select>
+                    <select id="difficultyFilter" class="filter-select">
+                        <option value="">Todas las dificultades</option>
+                        <option value="Fácil">Fácil</option>
+                        <option value="Intermedio">Intermedio</option>
+                        <option value="Difícil">Difícil</option>
+                    </select>
+                    <select id="typeFilter" class="filter-select">
+                        <option value="">Todas las recetas</option>
+                        <option value="gratuitas">Solo gratuitas</option>
+                        <option value="premium">Solo premium</option>
+                    </select>
+                </div>
+                <!-- Grid de Recetas -->
+                <div id="recipesGrid" class="recipes-grid">
+                    <div class="loading">
+                        Cargando recetas...
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <script src="js/shared.js"></script>
     <script src="js/recetas.js"></script>
