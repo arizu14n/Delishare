@@ -662,3 +662,18 @@ section {
   border-top: 1px solid var(--gray-dark);
   color: var(--gray-light);
 }
+
+/* Estilos para badge de usuario */
+.user-badge {
+  background: var(--gray-light);
+  color: var(--dark);
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.user-badge.premium {
+  background: var(--gradient-premium);
+  color: var(--white);
+}
