@@ -245,3 +245,270 @@
   margin-top: 1rem;
   flex-wrap: wrap;
 }
+
+/* Receta Modal */
+.recipe-modal-content {
+  max-width: 800px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-recipe-title {
+  font-size: 2rem;
+  color: var(--black);
+  margin-bottom: 1rem;
+  padding-right: 3rem;
+}
+
+.modal-recipe-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: var(--light-color);
+  border-radius: 10px;
+}
+
+.meta-item {
+  text-align: center;
+}
+
+.meta-label {
+  font-size: 0.9rem;
+  color: var(--gray-dark);
+  display: block;
+}
+
+.meta-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--black);
+}
+
+.modal-section {
+  margin-bottom: 2rem;
+}
+
+.modal-section h3 {
+  font-size: 1.3rem;
+  color: var(--secondary-color);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ingredients-list,
+.instructions-list {
+  background-color: var(--light-color);
+  padding: 1.5rem;
+  border-radius: 10px;
+  white-space: pre-line;
+  line-height: 1.8;
+}
+
+.premium-preview {
+  background: var(--gradient-premium);
+  color: var(--white);
+  padding: 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.premium-preview h4 {
+  margin-bottom: 1rem;
+}
+
+.premium-preview p {
+  margin-bottom: 1rem;
+}
+
+/* Modal de receta más grande */
+.recipe-modal-content {
+  max-width: 900px;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+/* Modal de agregar receta */
+#addRecipeModal .modal-content {
+    max-width: 700px; 
+    width: 90%; 
+    max-height: 90vh; 
+    overflow-y: auto; 
+    padding: 30px; 
+}
+
+/* Grupos de formulario dentro del modal */
+#addRecipeForm .form-group {
+    margin-bottom: 15px; 
+}
+
+#addRecipeForm label {
+    display: block; 
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--text-color-dark); 
+}
+
+#addRecipeForm input[type="text"],
+#addRecipeForm input[type="number"],
+#addRecipeForm input[type="url"],
+#addRecipeForm textarea,
+#addRecipeForm select {
+    width: calc(100% - 20px); 
+    padding: 10px;
+    border: 1px solid var(--border-color, #ccc); 
+    border-radius: var(--border-radius, 5px); 
+    font-size: 1rem;
+    box-sizing: border-box; 
+}
+
+#addRecipeForm textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Checkbox */
+#addRecipeForm .checkbox-group {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#addRecipeForm .checkbox-group input[type="checkbox"] {
+    margin-right: 10px;
+    width: auto; 
+    border: 1px solid var(--border-color, #ccc); 
+}
+
+#addRecipeForm .checkbox-group label {
+    margin-bottom: 0;
+    font-weight: normal;
+}
+
+/* Botón de submit */
+#addRecipeForm .btn-primary {
+    width: 100%;
+    padding: 12px 20px;
+    margin-top: 20px;
+    border-radius: var(--border-radius, 5px);
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    background-color: var(--primary-color, #4CAF50); 
+    color: var(--white-color, #fff); 
+    border: none;
+    transition: background-color 0.3s ease;
+    justify-content: center;
+}
+
+#addRecipeForm .btn-primary:hover {
+    background-color: var(--primary-dark-color, #45a049); 
+}
+
+@media (max-width: 768px) {
+    #addRecipeModal .modal-content {
+        width: 95%;
+        max-width: none; 
+        margin: 20px auto; 
+    }
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background-color: var(--white);
+  margin: 5% auto;
+  padding: 2rem;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 800px;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: var(--shadow-hover);
+}
+
+.close {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  font-size: 2rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: var(--text-light);
+  transition: color 0.3s ease;
+}
+
+.close:hover {
+  color: var(--text-dark);
+}
+
+.modal-recipe-title {
+  font-size: 2rem;
+  color: var(--text-dark);
+  margin-bottom: 1rem;
+  padding-right: 3rem;
+}
+
+.modal-recipe-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: var(--light-gray);
+  border-radius: 10px;
+}
+
+.meta-item {
+  text-align: center;
+}
+
+.meta-label {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  display: block;
+}
+
+.meta-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.modal-section {
+  margin-bottom: 2rem;
+}
+
+.modal-section h3 {
+  font-size: 1.3rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ingredients-list,
+.instructions-list {
+  background-color: var(--light-gray);
+  padding: 1.5rem;
+  border-radius: 10px;
+  white-space: pre-line;
+  line-height: 1.8;
+}
