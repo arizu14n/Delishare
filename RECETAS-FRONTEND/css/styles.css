@@ -1,17 +1,21 @@
-/* Variables CSS */
+/* Variables CSS actualizadas */
 :root {
-  --primary-color: #00b894;
-  --secondary-color: #00cec9;
+  --primary-color: #2c3e50;
+  --secondary-color: #00b894;
   --accent-color: #55efc4;
-  --dark-green: #00a085;
-  --light-green: #a8f5e8;
-  --text-dark: #2d3436;
-  --text-light: #636e72;
+  --premium-color: #f39c12;
+  --dark-color: #1a252f;
+  --light-color: #ecf0f1;
   --white: #ffffff;
-  --light-gray: #f8f9fa;
-  --border-color: #e9ecef;
+  --black: #2c3e50;
+  --gray-light: #bdc3c7;
+  --gray-dark: #7f8c8d;
+  --success-color: #27ae60;
+  --warning-color: #e74c3c;
   --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   --shadow-hover: 0 8px 15px rgba(0, 0, 0, 0.15);
+  --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  --gradient-premium: linear-gradient(135deg, var(--premium-color), #e67e22);
 }
 
 /* Reset y base */
@@ -24,7 +28,7 @@
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
-  color: var(--text-dark);
+  color: var(--black);
   background-color: var(--white);
 }
 
@@ -36,7 +40,7 @@ body {
 
 /* Header y Navegación */
 .header {
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  background: var(--gradient-primary);
   box-shadow: var(--shadow);
   position: sticky;
   top: 0;
@@ -60,6 +64,8 @@ body {
   color: var(--white);
   font-size: 1.8rem;
   font-weight: bold;
+  display: flex;
+  align-items: center;
 }
 
 .logo i {
@@ -67,8 +73,20 @@ body {
   color: var(--accent-color);
 }
 
+.logo a {
+  display: inline-flex; 
+  align-items: center;
+}
+
+.logo img {
+  height: 80px;
+  width: auto;
+  display: block;
+}
+
 .nav-menu {
   display: flex;
+  align-items: center;
   gap: 2rem;
 }
 
@@ -86,6 +104,70 @@ body {
 .nav-link.active {
   background-color: rgba(255, 255, 255, 0.2);
   color: var(--accent-color);
+}
+
+/* Botones de autenticación */
+.auth-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn-login {
+  background: transparent;
+  color: var(--white);
+  border: 2px solid var(--white);
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+  background: var(--white);
+  color: var(--primary-color);
+}
+
+.btn-register {
+  background: var(--premium-color);
+  color: var(--white);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-register:hover {
+  background: #e67e22;
+  transform: translateY(-2px);
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-name {
+  color: var(--white);
+  font-weight: 500;
+}
+
+.btn-logout {
+  background: var(--warning-color);
+  color: var(--white);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+  background: #c0392b;
 }
 
 /* Hero Section Mejorada */
