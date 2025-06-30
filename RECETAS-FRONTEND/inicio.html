@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delishare</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <h1 class="logo">
+                    <a href="inicio.html" class="logo-link">
+                        <img src="Imagenes/Logo.png" alt="Logo Recetas Premium">
+                    </a>
+                    Delishare
+                </h1>
+                <div class="nav-menu">
+                    <a href="inicio.html" class="nav-link active">Inicio</a>
+                    <a href="recetas.html" class="nav-link">Recetas</a>
+                    <a href="suscripcion.html" class="nav-link">Suscripción</a>
+                    <div class="auth-buttons" id="authButtons">
+                        <button class="btn-login" onclick="window.location.href='login.html'">Iniciar Sesión</button>
+                        <button class="btn-register"
+                            onclick="window.location.href='registrar.html'">Registrarse</button>
+                    </div>
+                </div>
+                <div class="user-menu" id="userMenu" style="display: none;">
+                    <span class="user-name" id="userName"></span>
+                    <span class="user-badge" id="userBadge"></span>
+                    <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Descubrí los Secretos de la Cocina</h2>
+                <p>Accede a recetas exclusivas y técnicas profesionales. <strong>Suscribite</strong> para ver las
+                    preparaciones completas paso a paso.</p>
+
+                <div class="hero-features">
+                    <div class="feature">
+                        <i class="fas fa-eye"></i>
+                        <span>Mirá ingredientes gratis</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-list-ol"></i>
+                        <span>Primeros 2 pasos gratis</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-crown"></i>
+                        <span>Preparaciones completas con suscripción</span>
+                    </div>
+                </div>
+
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Buscar recetas...">
+                    <button id="searchBtn" class="btn-primary">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+
+                <div class="hero-actions">
+                    <button onclick="window.location.href='recetas.html'" class="btn-secondary">
+                        <i class="fas fa-book-open"></i>
+                        Explorar Recetas
+                    </button>
+                    <button onclick="window.location.href='suscripcion.html'" class="btn-premium">
+                        <i class="fas fa-crown"></i>
+                        Ver Planes Premium
+                    </button>
+                </div>
+
+                <!-- Estadísticas -->
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="totalRecipes">0</div>
+                        <div class="stat-label">Recetas</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="totalCategories">0</div>
+                        <div class="stat-label">Categorías</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Profesionales</div>
+                    </div>
+                </div>
+
+                <!-- Categorías destacadas -->
+                <div class="featured-categories">
+                    <h3>Explora por Categorías</h3>
+                    <div class="categories-grid" id="categoriesGrid">
+                        <!-- Las categorías se cargarán aquí -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Delishare</h4>
+                    <p>Tu cocina, nuestros secretos. Descubrí el mundo de la gastronomía profesional.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Enlaces</h4>
+                    <a href="inicio.html">Inicio</a>
+                    <a href="recetas.html">Recetas</a>
+                    <a href="suscripcion.html">Suscripción</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Soporte</h4>
+                    <a href="#">Ayuda</a>
+                    <a href="#">Contacto</a>
+                    <a href="#">Términos</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Delishare. Todos los derechos reservados.</p>
+            </div>
+    </footer>
+
+    <script src="js/shared.js"></script>
+    <script src="js/inicio.js"></script>
+</body>
+
+</html>
