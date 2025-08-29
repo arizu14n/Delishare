@@ -69,4 +69,4 @@ El frontend se encuentra en la carpeta `RECETAS-FRONTEND/`. Puedes abrir `RECETA
 
 ---
 
-**Desarrollado por:** [Tu Nombre/Equipo]
+**Desarrollado por:** [Cuarteto de Códigos]
