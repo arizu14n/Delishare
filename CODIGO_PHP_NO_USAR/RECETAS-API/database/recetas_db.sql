@@ -7,7 +7,7 @@ CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     email VARCHAR(150) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
     tipo_suscripcion ENUM('gratuito', 'premium') DEFAULT 'gratuito',
     fecha_suscripcion DATE NULL,
     fecha_vencimiento DATE NULL,

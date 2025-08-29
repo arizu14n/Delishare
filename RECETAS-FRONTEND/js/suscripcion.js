@@ -1,359 +1,260 @@
-/* // Inicialización de la página de suscripción
-document.addEventListener("DOMContentLoaded", () => {
-  initializeSubscriptionPage()
-})
-
-
-function initializeSubscriptionPage() {
-  updateSubscriptionInterface()
-}
-
-// Actualizar interfaz según estado de suscripción
-function updateSubscriptionInterface() {
-  const freeButton = document.getElementById("freeButton")
-  const monthlyButton = document.getElementById("monthlyButton")
-  const annualButton = document.getElementById("annualButton")
-
-  if (!currentUser) {
-    // Usuario no logueado
-    if (monthlyButton) {
-      monthlyButton.onclick = () => {
-        showError("Debes iniciar sesión para suscribirte")
-        setTimeout(() => {
-          window.location.href = "login.html"
-        }, 2000)
-      }
-    }
-
-    if (annualButton) {
-      annualButton.onclick = () => {
-        showError("Debes iniciar sesión para suscribirte")
-        setTimeout(() => {
-          window.location.href = "login.html"
-        }, 2000)
-      }
-    }
-    return
-  }
-
-  // Usuario logueado - verificar estado de suscripción
-  if (currentUser.tipo_suscripcion === "premium" && currentUser.suscripcion_activa) {
-    // Usuario premium activo
-    if (freeButton) {
-      freeButton.textContent = "Plan Anterior"
-      freeButton.className = "btn-plan"
-    }
-
-    if (monthlyButton) {
-      monthlyButton.textContent = "Plan Actual"
-      monthlyButton.className = "btn-plan current"
-      monthlyButton.onclick = null
-    }
-
-    if (annualButton) {
-      annualButton.textContent = "Cambiar a Anual"
-      annualButton.className = "btn-plan premium"
-      annualButton.onclick = () => selectPlan("anual")
-    }
-  } else {
-    // Usuario gratuito
-    if (freeButton) {
-      freeButton.textContent = "Plan Actual"
-      freeButton.className = "btn-plan current"
-    }
-
-    if (monthlyButton) {
-      monthlyButton.onclick = () => selectPlan("mensual")
-    }
-
-    if (annualButton) {
-      annualButton.onclick = () => selectPlan("anual")
-    }
-  }
-}
-
-// Seleccionar plan de suscripción
-async function selectPlan(planType) {
-  if (!currentUser) {
-    showError("Debes iniciar sesión para suscribirte")
-    setTimeout(() => {
-      window.location.href = "login.html"
-    }, 2000)
-    return
-  }
-
-  if (currentUser.tipo_suscripcion === "premium" && currentUser.suscripcion_activa) {
-    if (planType === "mensual") {
-      showError("Ya tienes una suscripción premium activa")
-      return
-    }
-  }
-
-  // Mostrar confirmación
-  const planNames = {
-    mensual: "Premium Mensual ($9.99/mes)",
-    anual: "Premium Anual ($79.99/año)",
-  }
-
-  if (
-    !confirm(
-      `¿Confirmas la suscripción al plan ${planNames[planType]}?\n\nEsta es una simulación - no se realizará ningún cobro real.`,
-    )
-  ) {
-    return
-  }
-
-  try {
-    // Mostrar loading
-    const button =
-      planType === "mensual" ? document.getElementById("monthlyButton") : document.getElementById("annualButton")
-
-    if (button) {
-      const originalText = button.textContent
-      button.textContent = "Procesando..."
-      button.disabled = true
-    }
-
-    const response = await fetch(`${API_BASE_URL}/suscripcion.php`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        action: "subscribe",
-        usuario_id: currentUser.id,
-        plan: planType,
-      }),
-    })
-
-    const result = await response.json()
-
-    if (result.success) {
-      // Actualizar datos del usuario
-      currentUser.tipo_suscripcion = "premium"
-      currentUser.suscripcion_activa = true
-      currentUser.fecha_vencimiento = result.fecha_vencimiento
-
-      localStorage.setItem("currentUser", JSON.stringify(currentUser))
-      updateUserInterface()
-      updateSubscriptionInterface()
-
-      showSuccess(`¡Suscripción ${planType} activada exitosamente! 🎉`)
-
-      // Mostrar mensaje adicional
-      setTimeout(() => {
-        showSuccess("Ahora puedes ver todas las recetas completas paso a paso")
-      }, 2000)
-    } else {
-      showError(result.message || "Error al procesar la suscripción")
-    }
-  } catch (error) {
-    console.error("Error en suscripción:", error)
-    showError("Error de conexión al procesar la suscripción")
-  } finally {
-    // Restaurar botón
-    const button =
-      planType === "mensual" ? document.getElementById("monthlyButton") : document.getElementById("annualButton")
-
-    if (button) {
-      button.disabled = false
-      updateSubscriptionInterface()
-    }
-  }
-}
-
-// Hacer funciones globales
-window.selectPlan = selectPlan
-
-function showError(message) {
-  alert(message)
-}
-
-function showSuccess(message) {
-  alert(message)
-}
+let allPlans = [];
 
 function updateUserInterface() {
-  // Implement user interface update logic here
-}
- */
-
-/*
-let currentUser = JSON.parse(localStorage.getItem("currentUser") || "null")
-*/
-
-function updateUserInterface () {
-  const authButtons = document.getElementById("authButtons")
-  const userMenu    = document.getElementById("userMenu")
-  const userNameEl  = document.getElementById("userName")
-  const userBadgeEl = document.getElementById("userBadge")
+  const authButtons = document.getElementById("authButtons");
+  const userMenu = document.getElementById("userMenu");
+  const userNameEl = document.getElementById("userName");
+  const userBadgeEl = document.getElementById("userBadge");
 
   if (currentUser) {
     // Oculta botones de login/registro
-    if (authButtons) authButtons.style.display = "none"
+    if (authButtons) authButtons.style.display = "none";
     // Muestra menú de usuario
-    if (userMenu)    userMenu.style.display    = "flex"
+    if (userMenu) userMenu.style.display = "flex";
 
-    if (userNameEl)  userNameEl.textContent  = currentUser.nombre || "Usuario"
+    if (userNameEl) userNameEl.textContent = currentUser.nombre || "Usuario";
     if (userBadgeEl) userBadgeEl.textContent = currentUser.tipo_suscripcion === "premium"
       ? "⭐ Premium"
-      : "Free"
+      : "Free";
   } else {
     // Usuario no logueado
-    if (authButtons) authButtons.style.display = "flex"
-    if (userMenu)    userMenu.style.display    = "none"
+    if (authButtons) authButtons.style.display = "flex";
+    if (userMenu) userMenu.style.display = "none";
   }
 }
 
-function updateSubscriptionInterface () {
-  initializeSubscriptionPage()    
+function updateSubscriptionInterface() {
+  // Esta función ahora se encarga de actualizar el estado de los botones de plan
+  // basándose en si el usuario es premium o no.
+  const freeButton = document.getElementById("freeButton");
+  const monthlyButton = document.getElementById("monthlyButton");
+  const annualButton = document.getElementById("annualButton");
+
+  if (!currentUser) {
+    // Usuario no logueado: todos los planes premium redirigen a login
+    if (monthlyButton) monthlyButton.onclick = () => {
+      showError("Debes iniciar sesión para suscribirte");
+      setTimeout(() => { window.location.href = "login.html"; }, 2000);
+    };
+    if (annualButton) annualButton.onclick = () => {
+      showError("Debes iniciar sesión para suscribirte");
+      setTimeout(() => { window.location.href = "login.html"; }, 2000);
+    };
+    if (freeButton) {
+      freeButton.textContent = "Plan Actual";
+      freeButton.className = "btn-plan current";
+    }
+    return;
+  }
+
+  // Usuario logueado
+  if (currentUser.tipo_suscripcion === "premium" && currentUser.suscripcion_activa) {
+    // Usuario premium activo
+    if (freeButton) {
+      freeButton.textContent = "Plan Anterior";
+      freeButton.className = "btn-plan";
+    }
+    // Encontrar el plan actual del usuario (mensual o anual)
+    const currentPlan = allPlans.find(p => p.duracion_dias === (currentUser.fecha_vencimiento && (new Date(currentUser.fecha_vencimiento) - new Date(currentUser.fecha_suscripcion)) / (1000 * 60 * 60 * 24) > 30 ? 365 : 30));
+
+    allPlans.forEach(plan => {
+      const button = document.getElementById(plan.nombre.toLowerCase() + "Button");
+      if (button) {
+        if (currentPlan && plan.id === currentPlan.id) {
+          button.textContent = "Plan Actual";
+          button.className = "btn-plan current";
+          button.onclick = null;
+        } else {
+          button.textContent = `Cambiar a ${plan.nombre}`;
+          button.className = "btn-plan premium";
+          button.onclick = () => selectPlan(plan.nombre.toLowerCase());
+        }
+      }
+    });
+  } else {
+    // Usuario gratuito
+    if (freeButton) {
+      freeButton.textContent = "Plan Actual";
+      freeButton.className = "btn-plan current";
+    }
+    allPlans.forEach(plan => {
+      const button = document.getElementById(plan.nombre.toLowerCase() + "Button");
+      if (button) {
+        button.textContent = `Suscribirse ${plan.nombre}`;
+        button.className = "btn-plan premium";
+        button.onclick = () => selectPlan(plan.nombre.toLowerCase());
+      }
+    });
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  updateUserInterface()         
-  initializeSubscriptionPage()
-})
+  updateUserInterface();
+  initializeSubscriptionPage();
+});
 
-async function initializeSubscriptionPage () {
-  const freeButton    = document.getElementById("freeButton")
-  const monthlyButton = document.getElementById("monthlyButton")
-  const annualButton  = document.getElementById("annualButton")
+async function initializeSubscriptionPage() {
+  await loadPlans(); // Cargar planes al inicializar
+  updateSubscriptionInterface(); // Luego actualizar la interfaz
+}
 
-  // 👇 Evita reventar si no hay usuario
-  if (currentUser && currentUser.tipo_suscripcion === "premium" && currentUser.suscripcion_activa) {
-    // Usuario premium activo
-    if (freeButton) {
-      freeButton.textContent = "Plan Anterior"
-      freeButton.className = "btn-plan"
+// Cargar planes desde la API
+async function loadPlans() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/suscripcion/planes`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-
-    if (monthlyButton) {
-      monthlyButton.textContent = "Plan Actual"
-      monthlyButton.className = "btn-plan current"
-      monthlyButton.onclick = null
+    const data = await response.json();
+    if (Array.isArray(data)) {
+      allPlans = data;
+      displayPlans(); // Mostrar los planes cargados
+    } else {
+      console.error("Los planes no son un array:", data);
     }
-
-    if (annualButton) {
-      annualButton.textContent = "Cambiar a Anual"
-      annualButton.className = "btn-plan premium"
-      annualButton.onclick = () => selectPlan("anual")
-    }
-  } else {
-    if (freeButton) {
-      freeButton.textContent = "Plan Actual"
-      freeButton.className = "btn-plan current"
-    }
-
-    if (monthlyButton) {
-      monthlyButton.onclick = () => selectPlan("mensual")
-    }
-
-    if (annualButton) {
-      annualButton.onclick = () => selectPlan("anual")
-    }
+  } catch (error) {
+    console.error("Error al cargar planes:", error);
+    showError("Error al cargar los planes de suscripción");
   }
 }
 
+// Mostrar planes dinámicamente
+function displayPlans() {
+  const plansGrid = document.getElementById("plansGrid");
+  if (!plansGrid) return;
+
+  plansGrid.innerHTML = ""; // Limpiar planes existentes
+
+  // Añadir el plan gratuito (siempre presente)
+  plansGrid.innerHTML += `
+        <div class="plan-card">
+            <div class="plan-header">
+                <h3>Gratuito</h3>
+                <div class="plan-price">$0<span>/mes</span></div>
+            </div>
+            <div class="plan-features">
+                <div class="feature"><i class="fas fa-check"></i> Ver ingredientes completos</div>
+                <div class="feature"><i class="fas fa-check"></i> Primeros 2 pasos de preparación</div>
+                <div class="feature"><i class="fas fa-times"></i> Preparación completa</div>
+                <div class="feature"><i class="fas fa-times"></i> Recetas premium</div>
+            </div>
+            <button class="btn-plan current" id="freeButton">Plan Actual</button>
+        </div>
+    `;
+
+  allPlans.forEach(plan => {
+    const isFeatured = plan.nombre.toLowerCase() === "mensual"; // Marcar Mensual como destacado
+    plansGrid.innerHTML += `
+            <div class="plan-card ${isFeatured ? "featured" : ""}">
+                ${isFeatured ? '<div class="plan-badge">Más Popular</div>' : ''}
+                <div class="plan-header">
+                    <h3>${plan.nombre}</h3>
+                    <div class="plan-price">$${plan.precio}<span>/${plan.duracion_dias === 30 ? 'mes' : 'año'}</span></div>
+                    ${plan.duracion_dias === 365 ? '<div class="plan-savings">Ahorra 33%</div>' : ''}
+                </div>
+                <div class="plan-features">
+                    <div class="feature"><i class="fas fa-check"></i> Todo lo gratuito</div>
+                    <div class="feature"><i class="fas fa-check"></i> Preparaciones completas paso a paso</div>
+                    <div class="feature"><i class="fas fa-check"></i> Recetas premium exclusivas</div>
+                    <div class="feature"><i class="fas fa-check"></i> Sin anuncios</div>
+                    ${plan.duracion_dias === 365 ? '<div class="feature"><i class="fas fa-check"></i> Acceso prioritario a nuevas recetas</div><div class="feature"><i class="fas fa-check"></i> Recetas exclusivas de temporada</div><div class="feature"><i class="fas fa-check"></i> Soporte premium 24/7</div>' : ''}
+                </div>
+                <button class="btn-plan premium" id="${plan.nombre.toLowerCase()}Button" onclick="selectPlan('${plan.nombre.toLowerCase()}')">Suscribirse ${plan.nombre}</button>
+            </div>
+        `;
+  });
+
+  // Asegurarse de que los botones existan antes de llamar a updateSubscriptionInterface
+  updateSubscriptionInterface();
+}
 
 // Seleccionar plan de suscripción
-async function selectPlan(planType) {
+async function selectPlan(planName) {
   if (!currentUser) {
-    showError("Debes iniciar sesión para suscribirte")
-    setTimeout(() => {
-      window.location.href = "login.html"
-    }, 2000)
-    return
+    showError("Debes iniciar sesión para suscribirte");
+    setTimeout(() => { window.location.href = "login.html"; }, 2000);
+    return;
+  }
+
+  const selectedPlan = allPlans.find(p => p.nombre.toLowerCase() === planName);
+  if (!selectedPlan) {
+    showError("Plan no encontrado.");
+    return;
   }
 
   if (currentUser.tipo_suscripcion === "premium" && currentUser.suscripcion_activa) {
-    if (planType === "mensual") {
-      showError("Ya tienes una suscripción premium activa")
-      return
+    // Lógica para cambiar de plan o si ya es premium
+    if (selectedPlan.duracion_dias === (currentUser.fecha_vencimiento && (new Date(currentUser.fecha_vencimiento) - new Date(currentUser.fecha_suscripcion)) / (1000 * 60 * 60 * 24) > 30 ? 365 : 30)) {
+      showError("Ya tienes este plan premium activo.");
+      return;
     }
   }
 
   // Mostrar confirmación
-  const planNames = {
-    mensual: "Premium Mensual ($9.99/mes)",
-    anual: "Premium Anual ($79.99/año)",
-  }
-
   if (
     !confirm(
-      `¿Confirmas la suscripción al plan ${planNames[planType]}?\n\nEsta es una simulación - no se realizará ningún cobro real.`
+      `¿Confirmas la suscripción al plan ${selectedPlan.nombre} ($${selectedPlan.precio}/${selectedPlan.duracion_dias === 30 ? 'mes' : 'año'})?\n\nEsta es una simulación - no se realizará ningún cobro real.`
     )
   ) {
-    return
+    return;
   }
 
   try {
     // Mostrar loading
-    const button =
-      planType === "mensual" ? document.getElementById("monthlyButton") : document.getElementById("annualButton")
-
+    const button = document.getElementById(selectedPlan.nombre.toLowerCase() + "Button");
     if (button) {
-      const originalText = button.textContent
-      button.textContent = "Procesando..."
-      button.disabled = true
+      const originalText = button.textContent;
+      button.textContent = "Procesando...";
+      button.disabled = true;
     }
 
-    const response = await fetch(`${API_BASE_URL}/suscripcion.php`, {
+    const response = await fetch(`${API_BASE_URL}/suscripcion/subscribe`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        action: "subscribe",
         usuario_id: currentUser.id,
-        plan: planType,
+        plan: selectedPlan.nombre.toLowerCase(), // Usar el nombre del plan (mensual/anual)
       }),
-    })
+    });
 
-    const result = await response.json()
+    const result = await response.json();
 
-    if (result.success) {
+    if (response.ok) {
       // Actualizar datos del usuario
-      currentUser.tipo_suscripcion = "premium"
-      currentUser.suscripcion_activa = true
-      currentUser.fecha_vencimiento = result.fecha_vencimiento
+      currentUser.tipo_suscripcion = "premium";
+      currentUser.suscripcion_activa = true;
+      currentUser.fecha_suscripcion = new Date().toISOString().slice(0, 10); // Fecha actual
+      currentUser.fecha_vencimiento = result.fecha_vencimiento; // Viene del backend
 
-      localStorage.setItem("currentUser", JSON.stringify(currentUser))
-      updateUserInterface()
-      updateSubscriptionInterface()
+      localStorage.setItem("currentUser", JSON.stringify(currentUser));
+      updateUserInterface();
+      updateSubscriptionInterface();
 
-      showSuccess(`¡Suscripción ${planType} activada exitosamente! 🎉`)
+      showSuccess(`¡Suscripción ${selectedPlan.nombre} activada exitosamente! 🎉`);
 
       // Mostrar mensaje adicional
       setTimeout(() => {
-        showSuccess("Ahora puedes ver todas las recetas completas paso a paso")
-      }, 2000)
+        showSuccess("Ahora puedes ver todas las recetas completas paso a paso");
+      }, 2000);
     } else {
-      showError(result.message || "Error al procesar la suscripción")
+      showError(result.description || "Error al procesar la suscripción");
     }
   } catch (error) {
-    console.error("Error en suscripción:", error)
-    showError("Error de conexión al procesar la suscripción")
+    console.error("Error en suscripción:", error);
+    showError("Error de conexión al procesar la suscripción");
   } finally {
     // Restaurar botón
-    const button =
-      planType === "mensual" ? document.getElementById("monthlyButton") : document.getElementById("annualButton")
-
+    const button = document.getElementById(selectedPlan.nombre.toLowerCase() + "Button");
     if (button) {
-      button.disabled = false
-      updateSubscriptionInterface()
+      button.disabled = false;
+      updateSubscriptionInterface();
     }
   }
 }
 
 // Hacer funciones globales
-window.selectPlan = selectPlan
-
-function showError(message) {
-  alert(message)
-}
-
-function showSuccess(message) {
-  alert(message)
-}
-
-
+window.selectPlan = selectPlan;
+window.showError = showError; // Asegurarse de que showError esté disponible globalmente
+window.showSuccess = showSuccess; // Asegurarse de que showSuccess esté disponible globalmente

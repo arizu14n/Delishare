@@ -40,13 +40,12 @@ async function handleLogin(e) {
     submitButton.textContent = "Iniciando sesión...";
     submitButton.disabled = true;
 
-    const response = await fetch(`${API_BASE_URL}/auth.php`, {
+    const response = await fetch(`${API_BASE_URL}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        action: "login",
         email: email,
         password: password,
       }),
@@ -54,7 +53,7 @@ async function handleLogin(e) {
 
     const result = await response.json();
 
-    if (result.success) {
+    if (response.ok) {
       localStorage.setItem("currentUser", JSON.stringify(result.user));
       document.getElementById("overlay").style.display = "flex";
 
@@ -62,7 +61,7 @@ async function handleLogin(e) {
         window.location.href = "inicio.html";
       }, 1500);
     } else {
-      alert(result.message || "Error al iniciar sesión");
+      alert(result.description || "Error al iniciar sesión");
     }
   } catch (error) {
     console.error("Error en login:", error);
@@ -99,32 +98,21 @@ async function handleRegister(e) {
     submitButton.textContent = "Creando cuenta...";
     submitButton.disabled = true;
 
-    const response = await fetch(`${API_BASE_URL}/auth.php`, {
+    const response = await fetch(`${API_BASE_URL}/auth/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        action: "register",
         nombre: nombre,
         email: email,
         password: password,
       }),
     });
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => null);
-      if (response.status === 409) {
-        alert(errorData?.message || "Este correo ya está registrado.");
-      } else {
-        alert(errorData?.message || "Error al crear la cuenta.");
-      }
-      return;
-    }
-
     const result = await response.json();
 
-    if (result.success) {
+    if (response.ok) {
       localStorage.setItem("currentUser", JSON.stringify(result.user));
 
       alert("¡Cuenta creada exitosamente! Redirigiendo a tu inicio...");
@@ -132,7 +120,8 @@ async function handleRegister(e) {
         window.location.href = "inicio.html";
       }, 2000);
     } else {
-      alert(result.message || "Error desconocido.");
+      // Usar el mensaje de error del backend o uno por defecto
+      alert(result.description || "Error al crear la cuenta.");
     }
   } catch (error) {
     console.error("Error en registro:", error);

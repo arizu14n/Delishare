@@ -1,0 +1,6 @@
+Flask
+Flask-Cors
+mysql-connector-python
+python-dotenv
+passlib==1.7.4
+bcrypt==3.2.0

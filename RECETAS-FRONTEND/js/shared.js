@@ -1,5 +1,5 @@
 // Configuración de la API
-const API_BASE_URL = "http://localhost/prueba/recetas-api/api/endpoints"
+const API_BASE_URL = "http://127.0.0.1:5000"
 
 // Variables globales compartidas
 let currentUser = null

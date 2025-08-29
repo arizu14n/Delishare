@@ -49,7 +49,7 @@ function setupHomeEventListeners() {
 async function updateStats() {
   try {
     // Cargar recetas para contar
-    const response = await fetch(`${API_BASE_URL}/recetas.php`)
+    const response = await fetch(`${API_BASE_URL}/recetas/`)
     const recipes = await response.json()
 
     const totalRecipesEl = document.getElementById("totalRecipes")
@@ -70,7 +70,7 @@ async function updateStats() {
 // Cargar categorías desde la API
 async function loadCategories() {
   try {
-    const response = await fetch(`${API_BASE_URL}/categorias.php`)
+    const response = await fetch(`${API_BASE_URL}/recetas/categorias`)
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)

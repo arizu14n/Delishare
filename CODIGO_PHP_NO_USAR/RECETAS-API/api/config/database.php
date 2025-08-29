@@ -1,5 +1,5 @@
 <?php
-class Database {
+class Database { 
     private $host = "localhost";
     private $db_name = "recetas_cocina_prueba";
     private $username = "root";

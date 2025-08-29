@@ -143,7 +143,7 @@ function populateCategorySelects() {
 // Cargar categorías
 async function loadCategories() {
   try {
-    const response = await fetch(`${API_BASE_URL}/categorias.php`)
+    const response = await fetch(`${API_BASE_URL}/recetas/categorias`)
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
@@ -180,7 +180,7 @@ async function loadRecipes() {
   try {
     showLoading()
 
-    const response = await fetch(`${API_BASE_URL}/recetas.php`)
+    const response = await fetch(`${API_BASE_URL}/recetas/`)
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
@@ -325,7 +325,7 @@ function processInstructions(instructions, isPremium, userHasPremium) {
 // Mostrar detalles de receta
 async function showRecipeDetails(recipeId) {
   try {
-    const response = await fetch(`${API_BASE_URL}/recetas.php?id=${recipeId}`)
+    const response = await fetch(`${API_BASE_URL}/recetas/${recipeId}`)
     const recipe = await response.json()
 
     if (recipe.message) {
@@ -374,7 +374,7 @@ async function showRecipeDetails(recipeId) {
                 <div class="instructions-container">
                     ${processInstructions(recipe.instrucciones, recipe.es_premium, userHasPremium)}
                 </div>
-                ${
+                ${ 
                   !canViewFullRecipe
                     ? `
                     <div class="premium-preview">
@@ -415,15 +415,10 @@ async function handleSearch() {
 
   const searchTerm = searchInput.value.trim()
 
-  if (!searchTerm) {
-    await loadRecipes()
-    return
-  }
-
   try {
     showLoading()
 
-    const response = await fetch(`${API_BASE_URL}/recetas.php?search=${encodeURIComponent(searchTerm)}`)
+    const response = await fetch(`${API_BASE_URL}/recetas/?search=${encodeURIComponent(searchTerm)}`)
     const data = await response.json()
 
     if (Array.isArray(data)) {
@@ -504,7 +499,7 @@ async function submitNewRecipe(event) {
   }
 
   try {
-    const response = await fetch(`${API_BASE_URL}/recetas.php`, {
+    const response = await fetch(`${API_BASE_URL}/recetas/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
