@@ -65,9 +65,6 @@ def register_user():
     except Exception as e:
         abort(400, description=f"Datos de entrada inválidos: {e}")
 
-    if len(user_data.password) < 6:
-        abort(400, description="La contraseña debe tener al menos 6 caracteres.")
-
     try:
         if user_repository.get_user_by_email(user_data.email):
             abort(409, description="Este correo electrónico ya está registrado.")

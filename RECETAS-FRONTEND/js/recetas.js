@@ -257,20 +257,20 @@ function displayRecipes(recipes) {
       (recipe) => `
         <div class="recipe-card ${recipe.es_premium ? "premium" : ""}" onclick="showRecipeDetails(${recipe.id})">
             <div class="recipe-image">
-                ${recipe.imagen_url ? `<img src="${recipe.imagen_url}" alt="${recipe.titulo}">` : `<i class="fas fa-utensils"></i>`}
+                ${recipe.imagen_url ? `<img src="${DOMPurify.sanitize(recipe.imagen_url)}" alt="${DOMPurify.sanitize(recipe.titulo)}">` : `<i class="fas fa-utensils"></i>`}
             </div>
             <div class="recipe-content">
-                <h3 class="recipe-title">${recipe.titulo}</h3>
-                <p class="recipe-description">${recipe.descripcion || "Sin descripción"}</p>
+                <h3 class="recipe-title">${DOMPurify.sanitize(recipe.titulo)}</h3>
+                <p class="recipe-description">${DOMPurify.sanitize(recipe.descripcion || "Sin descripción")}</p>
                 <div class="recipe-meta">
-                    <span><i class="fas fa-clock"></i> ${recipe.tiempo_preparacion || "N/A"} min</span>
-                    <span><i class="fas fa-users"></i> ${recipe.porciones || "N/A"} porciones</span>
+                    <span><i class="fas fa-clock"></i> ${DOMPurify.sanitize(recipe.tiempo_preparacion || "N/A")} min</span>
+                    <span><i class="fas fa-users"></i> ${DOMPurify.sanitize(recipe.porciones || "N/A")} porciones</span>
                 </div>
                 <div class="recipe-meta" style="margin-top: 0.5rem;">
                     <span class="recipe-difficulty difficulty-${(recipe.dificultad || "fácil").toLowerCase()}">
-                        ${recipe.dificultad || "Fácil"}
+                        ${DOMPurify.sanitize(recipe.dificultad || "Fácil")}
                     </span>
-                    <span><i class="fas fa-user"></i> ${recipe.autor || "Anónimo"}</span>
+                    <span><i class="fas fa-user"></i> ${DOMPurify.sanitize(recipe.autor || "Anónimo")}</span>
                 </div>
             </div>
         </div>
@@ -292,7 +292,7 @@ function processInstructions(instructions, isPremium, userHasPremium) {
         (step, index) =>
           `<div class="instruction-step">
                 <span class="step-number">${index + 1}</span>
-                <span class="step-text">${step}</span>
+                <span class="step-text">${DOMPurify.sanitize(step)}</span>
             </div>`,
       )
       .join("")
@@ -306,7 +306,7 @@ function processInstructions(instructions, isPremium, userHasPremium) {
         (step, index) =>
           `<div class="instruction-step">
                 <span class="step-number">${index + 1}</span>
-                <span class="step-text">${step}</span>
+                <span class="step-text">${DOMPurify.sanitize(step)}</span>
             </div>`,
       )
       .join("")
@@ -341,32 +341,32 @@ async function showRecipeDetails(recipeId) {
     const canViewFullRecipe = !recipe.es_premium || userHasPremium
 
     modalContent.innerHTML = `
-            <h2 class="modal-recipe-title">${recipe.titulo}</h2>
+            <h2 class="modal-recipe-title">${DOMPurify.sanitize(recipe.titulo)}</h2>
             
             <div class="modal-recipe-meta">
                 <div class="meta-item">
                     <span class="meta-label">Tiempo</span>
-                    <span class="meta-value">${recipe.tiempo_preparacion || "N/A"} min</span>
+                    <span class="meta-value">${DOMPurify.sanitize(recipe.tiempo_preparacion || "N/A")} min</span>
                 </div>
                 <div class="meta-item">
                     <span class="meta-label">Porciones</span>
-                    <span class="meta-value">${recipe.porciones || "N/A"}</span>
+                    <span class="meta-value">${DOMPurify.sanitize(recipe.porciones || "N/A")}</span>
                 </div>
                 <div class="meta-item">
                     <span class="meta-label">Dificultad</span>
-                    <span class="meta-value">${recipe.dificultad || "Fácil"}</span>
+                    <span class="meta-value">${DOMPurify.sanitize(recipe.dificultad || "Fácil")}</span>
                 </div>
                 <div class="meta-item">
                     <span class="meta-label">Autor</span>
-                    <span class="meta-value">${recipe.autor || "Anónimo"}</span>
+                    <span class="meta-value">${DOMPurify.sanitize(recipe.autor || "Anónimo")}</span>
                 </div>
             </div>
             
-            ${recipe.descripcion ? `<p style="margin-bottom: 2rem; font-style: italic; color: var(--gray-dark);">${recipe.descripcion}</p>` : ""}
+            ${recipe.descripcion ? `<p style="margin-bottom: 2rem; font-style: italic; color: var(--gray-dark);">${DOMPurify.sanitize(recipe.descripcion)}</p>` : ""}
             
             <div class="modal-section">
                 <h3><i class="fas fa-list"></i> Ingredientes</h3>
-                <div class="ingredients-list">${recipe.ingredientes}</div>
+                <div class="ingredients-list">${DOMPurify.sanitize(recipe.ingredientes)}</div>
             </div>
             
             <div class="modal-section">
