@@ -25,6 +25,7 @@
 <h3>Usuarios Premium</h3>
 <ul>
   <li>Acceso a todas las recetas, incluyendo las marcadas como premium.</li>
+  <li>Todas las características de los usuarios registrados gratuitos.</li>
   <li>Posibilidad de marcar sus propias recetas como premium al crearlas.</li>
 </ul>
 
