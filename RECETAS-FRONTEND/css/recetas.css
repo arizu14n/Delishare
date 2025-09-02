@@ -524,7 +524,7 @@
 /* Estilos para badge de usuario */
 .user-badge {
   background: var(--gray-light);
-  color: var(--gray-dark);
+  color: var(--black);
   padding: 0.3rem 0.8rem;
   border-radius: 15px;
   font-size: 0.8rem;
@@ -540,5 +540,5 @@
 /* Gris para Free */
 .user-badge.free {
   background-color: var(--gradient-primary);
-  color: #333;
+  color: var(--black);
 }
