@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Delishare</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/png" href="imagenes/Logo.png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/recetas.css">
 </head>
@@ -21,17 +22,17 @@
                 <div class="nav-menu">
                     <a href="inicio.html" class="nav-link">Inicio</a>
                     <a href="recetas.html" class="nav-link active">Recetas</a>
-                    <a href="suscripcion.html" class="nav-link">Suscripción</a>  
+                    <a href="suscripcion.html" class="nav-link">Suscripción</a>
                     <div class="auth-buttons" id="authButtons">
                         <button class="btn-login" onclick="window.location.href='login.html'">Iniciar Sesión</button>
                         <button class="btn-register"
                             onclick="window.location.href='registrar.html'">Registrarse</button>
-                    </div>                  
-                    <div class="user-menu" id="userMenu" style="display: none;">
-                        <span class="user-name" id="userName"></span>
-                        <span class="user-badge" id="userBadge"></span>
-                        <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
                     </div>
+                </div>
+                <div class="user-menu" id="userMenu" style="display: none;">
+                    <span class="user-name" id="userName"></span>
+                    <span class="user-badge" id="userBadge"></span>
+                    <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
                 </div>
             </div>
         </nav>

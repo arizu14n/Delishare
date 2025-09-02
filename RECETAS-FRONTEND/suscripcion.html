@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Suscripción - Delishare</title>
+    <link rel="icon" type="image/png" href="imagenes/Logo.png">
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
@@ -28,12 +29,11 @@
                         <button class="btn-register"
                             onclick="window.location.href='registrar.html'">Registrarse</button>
                     </div>
-
-                    <div class="user-menu" id="userMenu" style="display: none;">
-                        <span class="user-name" id="userName"></span>
-                        <span class="user-badge" id="userBadge"></span>
-                        <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
-                    </div>
+                </div>
+                <div class="user-menu" id="userMenu" style="display: none;">
+                    <span class="user-name" id="userName"></span>
+                    <span class="user-badge" id="userBadge"></span>
+                    <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
                 </div>
             </div>
         </nav>
@@ -44,7 +44,8 @@
         <section class="subscription-section">
             <div class="container">
                 <h2 class="section-title">Planes de Suscripción</h2>
-                <p class="subscription-intro">Accede a todas las preparaciones completas paso a paso y contenido exclusivo</p>
+                <p class="subscription-intro">Accede a todas las preparaciones completas paso a paso y contenido
+                    exclusivo</p>
                 <div class="plans-grid" id="plansGrid">
                     <!-- Los planes se cargarán aquí dinámicamente -->
                 </div>

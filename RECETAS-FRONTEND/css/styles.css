@@ -188,22 +188,27 @@ body {
 }
 
 .hero-features {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(300px, 1fr));
   gap: 2rem;
   margin-bottom: 2rem;
-  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .feature {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
   background: var(--white);
   padding: 1rem;
   border-radius: 10px;
   box-shadow: var(--shadow);
+transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+.feature:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);}
 
 .feature i {
   color: var(--secondary-color);
@@ -354,8 +359,11 @@ body {
 
 .categories-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(4, minmax(250px, 1fr));
   gap: 1.5rem;
+  margin: 2rem auto;
+  max-width: 1200px; 
+  justify-content: center;
 }
 
 .category-card {
@@ -391,6 +399,18 @@ body {
 .category-description {
   font-size: 0.9rem;
   color: var(--gray-dark);
+}
+
+@media (max-width: 1024px) {
+  .categories-grid {
+    grid-template-columns: repeat(2, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .categories-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Secciones */
@@ -439,10 +459,11 @@ section {
 /* Planes de suscripción */
 .plans-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(4, minmax(350px, 1fr));
   gap: 2rem;
   max-width: 1000px;
   margin: 0 auto;
+justify-content: center;
 }
 
 .plan-card {
@@ -960,6 +981,7 @@ section {
   .hero-features {
     flex-direction: column;
     align-items: center;
+    grid-template-columns: 1fr 1fr;
   }
 
   .search-container {
@@ -1032,6 +1054,10 @@ section {
   .modal-recipe-meta {
     grid-template-columns: 1fr;
   }
+
+  .hero-features {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Animaciones */
@@ -1062,9 +1088,16 @@ section {
   font-weight: 600;
 }
 
+/* Naranja para Premium */
 .user-badge.premium {
   background: var(--gradient-premium);
   color: var(--white);
+}
+
+/* Gris para Free */
+.user-badge.free {
+  background-color: var(--gradient-primary);
+  color: #333;
 }
 
 /* Estilos para pasos de instrucciones */
@@ -1168,20 +1201,6 @@ section {
   max-width: 900px;
   max-height: 85vh;
   overflow-y: auto;
-}
-
-.user-badge {
-  background-color: #ccc;
-  color: #000;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 0.85em;
-}
-
-.user-badge.premium {
-  background-color: #ffd700;
-  color: #000;
-  font-weight: bold;
 }
 
 .logo {
@@ -1385,25 +1404,6 @@ section {
   font-weight: bold;
 }
 
-.user-badge {
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: bold;
-}
-
-/* Naranja para Premium */
-.user-badge.premium {
-  background-color: var(--gradient-premium);  
-  color: white;
-}
-
-/* Gris para Free */
-.user-badge.free {
-  background-color: var(--gradient-primary);
-  color: #333;
-}
-
 /* Estilos para el modal de agregar receta */
 .modal-overlay {
   position: fixed;
@@ -1528,21 +1528,6 @@ section {
   padding-top: 2rem;
   border-top: 1px solid var(--gray-dark);
   color: var(--gray-light);
-}
-
-/* Estilos para badge de usuario */
-.user-badge {
-  background: var(--gray-light);
-  color: var(--dark);
-  padding: 0.3rem 0.8rem;
-  border-radius: 15px;
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-.user-badge.premium {
-  background: var(--gradient-premium);
-  color: var(--white);
 }
 
 * Loading y estados */

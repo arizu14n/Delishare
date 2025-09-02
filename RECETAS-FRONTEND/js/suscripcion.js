@@ -1,28 +1,5 @@
 let allPlans = [];
 
-function updateUserInterface() {
-  const authButtons = document.getElementById("authButtons");
-  const userMenu = document.getElementById("userMenu");
-  const userNameEl = document.getElementById("userName");
-  const userBadgeEl = document.getElementById("userBadge");
-
-  if (currentUser) {
-    // Oculta botones de login/registro
-    if (authButtons) authButtons.style.display = "none";
-    // Muestra menú de usuario
-    if (userMenu) userMenu.style.display = "flex";
-
-    if (userNameEl) userNameEl.textContent = currentUser.nombre || "Usuario";
-    if (userBadgeEl) userBadgeEl.textContent = currentUser.tipo_suscripcion === "premium"
-      ? "⭐ Premium"
-      : "Free";
-  } else {
-    // Usuario no logueado
-    if (authButtons) authButtons.style.display = "flex";
-    if (userMenu) userMenu.style.display = "none";
-  }
-}
-
 function updateSubscriptionInterface() {
   // Esta función ahora se encarga de actualizar el estado de los botones de plan
   // basándose en si el usuario es premium o no.
