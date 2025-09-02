@@ -68,14 +68,14 @@
   justify-content: center;
   font-size: 3rem;
   color: var(--secondary-color);
-  overflow: hidden; /* Asegura que la imagen no se desborde */
+  overflow: hidden; 
 }
 
 .recipe-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Cubre el área manteniendo la relación de aspecto */
-  display: block; /* Elimina espacio extra debajo de la imagen */
+  object-fit: cover; 
+  display: block; 
 }
 
 .recipe-content {
@@ -519,4 +519,26 @@
   border-radius: 10px;
   white-space: pre-line;
   line-height: 1.8;
+}
+
+/* Estilos para badge de usuario */
+.user-badge {
+  background: var(--gray-light);
+  color: var(--gray-dark);
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* Naranja para Premium */
+.user-badge.premium {
+  background: var(--gradient-premium);
+  color: var(--white);
+}
+
+/* Gris para Free */
+.user-badge.free {
+  background-color: var(--gradient-primary);
+  color: #333;
 }

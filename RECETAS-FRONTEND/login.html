@@ -5,12 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión - Delishare</title>
+    <link rel="icon" type="image/png" href="imagenes/Logo.png">
     <link rel="stylesheet" href="css/login.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-
 </head>
 
 <body>
+    <div id="overlay" style="display:none;">
+        <div class="loader-container">
+            <div class="spinner"></div>
+            <div class="loader-message">Iniciando sesión...</div>
+        </div>
+    </div>
+
     <a href="inicio.html" class="back-link">
         <i class="fas fa-arrow-left"></i>
         Volver al inicio
