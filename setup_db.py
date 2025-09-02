@@ -109,7 +109,7 @@ def setup_database():
         sys.exit(1)
 
     # Execute the SQL schema file
-    sql_file_path = os.path.join(os.path.dirname(__file__), "RECETAS-API", "database", "recetas_db.sql")
+    sql_file_path = os.path.join(os.path.dirname(__file__), "CODIGO_PHP_NO_USAR", "RECETAS-API", "database", "recetas_db.sql")
     execute_sql_file_with_mysql_client(sql_file_path, DB_NAME)
 
     # Update admin password to a known hash
