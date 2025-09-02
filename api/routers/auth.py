@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify, abort
 from mysql.connector import Error
+import re
 from passlib.context import CryptContext
 
 from ..database import get_db_connection
@@ -64,6 +65,12 @@ def register_user():
         user_data = UsuarioCreate(**request.get_json())
     except Exception as e:
         abort(400, description=f"Datos de entrada inválidos: {e}")
+
+    # Validación de contraseña con RegEx en el backend
+    password_regex = r"^[a-zA-Z0-9!@#$%^&*]{8,20}$"
+    if not re.match(password_regex, user_data.password):
+        abort(400, description="La contraseña no cumple con los requisitos de formato (8-20 caracteres, sin espacios).")
+
 
     try:
         if user_repository.get_user_by_email(user_data.email):
