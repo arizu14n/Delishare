@@ -20,7 +20,7 @@ pwd_context = CryptContext(schemes=["bcrypt", "sha256_crypt"], deprecated="auto"
 def get_mysql_command():
     """
     Attempts to find the mysql client executable.
-    """
+    """    
     mysql_cmd = "mysql"
     try:
         subprocess.run([mysql_cmd, "--version"], check=True, capture_output=True)

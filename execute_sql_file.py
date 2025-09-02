@@ -97,5 +97,5 @@ def execute_sql_from_file(sql_file_path):
             print("Conexión a MySQL cerrada.")
 
 if __name__ == '__main__':
-    sql_file = "C:\\ISVDR\\Delishare_Python\\Delishare\\RECETAS-API\\database\\recetas_db.sql"
+    sql_file = "C:\\xampp\\htdocs\\Delishare\\RECETAS-API\\database\\recetas_db.sql"
     execute_sql_from_file(sql_file)
