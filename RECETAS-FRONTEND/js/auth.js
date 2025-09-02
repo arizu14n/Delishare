@@ -86,8 +86,10 @@ async function handleRegister(e) {
     return;
   }
 
-  if (password.length < 6) {
-    alert("La contraseña debe tener al menos 6 caracteres.");
+  // Validación de contraseña con RegEx como pide la consigna
+  const passwordRegex = /^[a-zA-Z0-9!@#$%^&*]{8,20}$/;
+  if (!passwordRegex.test(password)) {
+    alert("La contraseña debe tener entre 8 y 20 caracteres y no contener espacios. Puede incluir letras, números y los símbolos !@#$%^&*");
     return;
   }
 

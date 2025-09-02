@@ -21,20 +21,22 @@ app.register_blueprint(suscripcion_bp, url_prefix='/suscripcion')
 def read_root():
     return jsonify({"message": "Bienvenido a la API de Delishare con Flask"})
 
+# Manejadores de errores globales para devolver respuestas JSON consistentes
+@app.errorhandler(400)
+@app.errorhandler(401)
+@app.errorhandler(404)
+@app.errorhandler(409)
+@app.errorhandler(500)
+def handle_errors(e):
+    # Asegurarse de que el código de estado y la descripción sean correctos
+    code = e.code if hasattr(e, "code") else 500
+    description = e.description if hasattr(e, "description") else str(e)
+    return jsonify({
+        "success": False,
+        "error": description
+    }), code
+
 # Punto de entrada para ejecutar la aplicación
 if __name__ == '__main__':
     # Escucha en todas las interfaces de red en el puerto 5000
     app.run(host='0.0.0.0', port=5000, debug=True)
-
-app = Flask(__name__)
-app.register_blueprint(auth_bp)
-
-@app.errorhandler(400)
-@app.errorhandler(401)
-@app.errorhandler(409)
-@app.errorhandler(500)
-def handle_errors(e):
-    return jsonify({
-        "success": False,
-        "error": e.description if hasattr(e, "description") else str(e)
-    }), e.code if hasattr(e, "code") else 500
