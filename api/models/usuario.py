@@ -18,7 +18,7 @@ class UsuarioCreate(UsuarioBase):
 
 class UsuarioInDB(UsuarioBase):
     id: int
-    password: str # Hash de la contraseña almacenado en DB
+    password_hash: str # Hash de la contraseña almacenado en DB
     created_at: datetime
     updated_at: datetime
 

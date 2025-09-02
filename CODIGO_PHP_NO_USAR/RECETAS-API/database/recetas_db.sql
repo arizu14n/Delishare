@@ -150,7 +150,7 @@ INSERT INTO planes_suscripcion (nombre, precio, duracion_dias, descripcion) VALU
 ('Anual', 79.99, 365, 'Acceso completo por 1 año (33% descuento)');
 
 -- Insertar usuario administrador (contraseña: admin123)
-INSERT INTO usuarios (nombre, email, password, tipo_suscripcion) VALUES
+INSERT INTO usuarios (nombre, email, password_hash, tipo_suscripcion) VALUES
 ('Administrador', 'admin@recetas.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'premium');
 
 -- Insertar recetas de ejemplo mejoradas

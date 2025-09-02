@@ -114,14 +114,11 @@ async function handleRegister(e) {
 
     if (response.ok) {
       localStorage.setItem("currentUser", JSON.stringify(result.user));
-
       alert("¡Cuenta creada exitosamente! Redirigiendo a tu inicio...");
-      setTimeout(() => {
-        window.location.href = "inicio.html";
-      }, 2000);
+      setTimeout(() => (window.location.href = "inicio.html"), 2000);
     } else {
-      // Usar el mensaje de error del backend o uno por defecto
-      alert(result.description || "Error al crear la cuenta.");
+      const message = result.error || "Error al crear la cuenta.";
+      alert(message);
     }
   } catch (error) {
     console.error("Error en registro:", error);

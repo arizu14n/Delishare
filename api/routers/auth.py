@@ -20,7 +20,7 @@ class UserRepository:
             if conn is None:
                 raise ConnectionError("No se pudo conectar a la base de datos.")
             cursor = conn.cursor(dictionary=True)
-            cursor.execute("SELECT id, nombre, email, password, tipo_suscripcion, fecha_suscripcion, fecha_vencimiento, activo, intentos_login, bloqueado_hasta, ultimo_login, created_at, updated_at FROM usuarios WHERE email = %s", (email,))
+            cursor.execute("SELECT id, nombre, email, password_hash, tipo_suscripcion, fecha_suscripcion, fecha_vencimiento, activo, intentos_login, bloqueado_hasta, ultimo_login, created_at, updated_at FROM usuarios WHERE email = %s", (email,))
             user_data = cursor.fetchone()
             if user_data:
                 return UsuarioInDB(**user_data)
@@ -41,7 +41,7 @@ class UserRepository:
             if conn is None:
                 raise ConnectionError("No se pudo conectar a la base de datos.")
             cursor = conn.cursor()
-            query = "INSERT INTO usuarios (nombre, email, password) VALUES (%s, %s, %s)"
+            query = "INSERT INTO usuarios (nombre, email, password_hash) VALUES (%s, %s, %s)"
             cursor.execute(query, (user.nombre, user.email, password_hash))
             conn.commit()
             return cursor.lastrowid
@@ -109,7 +109,7 @@ def login_user():
         user_in_db = user_repository.get_user_by_email(email)
 
         # Verificar si el usuario existe y la contraseña es correcta
-        if user_in_db and pwd_context.verify(password, user_in_db.password):
+        if user_in_db and pwd_context.verify(password, user_in_db.password_hash):
             # Calcular si la suscripción está activa
             from datetime import date
             is_active = False
