@@ -12,7 +12,7 @@ load_dotenv()
 DB_HOST = os.getenv("DB_HOST", "localhost")
 DB_USER = os.getenv("DB_USER", "root")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "")
-DB_NAME = os.getenv("DB_NAME", "delishare_db")
+DB_NAME = os.getenv("DB_NAME", "receta_cocina_prueba")
 
 def create_database_and_tables():
     """
