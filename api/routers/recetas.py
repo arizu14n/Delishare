@@ -1,161 +1,79 @@
 from flask import Blueprint, jsonify, abort, request
-from mysql.connector import Error
+from sqlalchemy.orm import joinedload
 from typing import Optional
 
-from ..database import get_db_connection
-from ..models.receta import Receta, RecetaCreate
-from ..models.categoria import Categoria
+from ..database import get_db_session
+from ..models.receta import Receta, RecetaCreate, RecetaDB
+from ..models.categoria import Categoria, CategoriaDB
 
 recetas_bp = Blueprint('recetas', __name__)
 
 # --- Repositorio de Categorías ---
 class CategoriaRepository:
-    def get_all_categorias(self):
-        conn = None
-        cursor = None
-        try:
-            conn = get_db_connection()
-            if conn is None:
-                raise ConnectionError("No se pudo conectar a la base de datos.")
-            cursor = conn.cursor(dictionary=True)
-            cursor.execute("SELECT id, nombre, descripcion, icono, activo, orden, created_at FROM categorias ORDER BY nombre ASC")
-            categorias_data = cursor.fetchall()
-            return [Categoria(**data) for data in categorias_data]
-        except Error as e:
-            raise RuntimeError(f"Error de base de datos al obtener categorías: {e}")
-        finally:
-            if cursor: cursor.close()
-            if conn and conn.is_connected(): conn.close()
+    def __init__(self):
+        self.db_session = get_db_session()
 
-    def get_categoria_by_id(self, categoria_id: int):
-        conn = None
-        cursor = None
-        try:
-            conn = get_db_connection()
-            if conn is None:
-                raise ConnectionError("No se pudo conectar a la base de datos.")
-            cursor = conn.cursor(dictionary=True)
-            cursor.execute("SELECT id, nombre, descripcion, icono, activo, orden, created_at FROM categorias WHERE id = %s", (categoria_id,))
-            categoria_data = cursor.fetchone()
-            if categoria_data:
-                return Categoria(**categoria_data)
-            return None
-        except Error as e:
-            raise RuntimeError(f"Error de base de datos al obtener categoría por ID: {e}")
-        finally:
-            if cursor: cursor.close()
-            if conn and conn.is_connected(): conn.close()
+    def get_all_categorias(self) -> list[Categoria]:
+        categorias_db = self.db_session.query(CategoriaDB).order_by(CategoriaDB.nombre.asc()).all()
+        return [Categoria.from_orm(cat) for cat in categorias_db]
+
+    def get_categoria_by_id(self, categoria_id: int) -> Optional[Categoria]:
+        categoria_db = self.db_session.query(CategoriaDB).filter(CategoriaDB.id == categoria_id).first()
+        if categoria_db:
+            return Categoria.from_orm(categoria_db)
+        return None
 
 categoria_repository = CategoriaRepository()
 
 # --- Repositorio de Recetas ---
 class RecetaRepository:
-    def get_all_recetas(self, search_term: Optional[str] = None):
-        conn = None
-        cursor = None
-        try:
-            conn = get_db_connection()
-            if conn is None:
-                raise ConnectionError("No se pudo conectar a la base de datos.")
-            cursor = conn.cursor(dictionary=True)
-            
-            base_query = ("SELECT r.*, c.nombre as categoria_nombre "
-                          "FROM recetas r LEFT JOIN categorias c ON r.categoria_id = c.id "
-                          "WHERE r.activo = TRUE")
-            
-            if search_term:
-                query = f"{base_query} AND (r.titulo LIKE %s OR r.ingredientes LIKE %s)"
-                params = (f"%{search_term}%", f"%{search_term}%")
-            else:
-                query = f"{base_query} ORDER BY r.created_at DESC"
-                params = ()
-                
-            cursor.execute(query, params)
-            recetas_data = cursor.fetchall()
-            return [Receta(**data) for data in recetas_data]
+    def __init__(self):
+        self.db_session = get_db_session()
 
-        except Error as e:
-            raise RuntimeError(f"Error de base de datos al obtener recetas: {e}")
-        finally:
-            if cursor: cursor.close()
-            if conn and conn.is_connected(): conn.close()
+    def get_all_recetas(self, search_term: Optional[str] = None) -> list[Receta]:
+        query = self.db_session.query(RecetaDB).options(joinedload(RecetaDB.categoria)).filter(RecetaDB.activo == True)
 
-    def get_receta_by_id(self, recipe_id: int):
-        conn = None
-        cursor = None
-        try:
-            conn = get_db_connection()
-            if conn is None:
-                raise ConnectionError("No se pudo conectar a la base de datos.")
-            cursor = conn.cursor(dictionary=True)
-            
-            query = ("SELECT r.*, c.nombre as categoria_nombre "
-                     "FROM recetas r LEFT JOIN categorias c ON r.categoria_id = c.id "
-                     "WHERE r.id = %s AND r.activo = TRUE")
-            
-            cursor.execute(query, (recipe_id,))
-            receta_data = cursor.fetchone()
-            
-            if receta_data:
-                return Receta(**receta_data)
-            return None
+        if search_term:
+            query = query.filter(RecetaDB.titulo.ilike(f"%{search_term}%") | RecetaDB.ingredientes.ilike(f"%{search_term}%"))
 
-        except Error as e:
-            raise RuntimeError(f"Error de base de datos al obtener receta por ID: {e}")
-        finally:
-            if cursor: cursor.close()
-            if conn and conn.is_connected(): conn.close()
+        recetas_db = query.order_by(RecetaDB.created_at.desc()).all()
+        
+        recetas = []
+        for rec in recetas_db:
+            receta_pydantic = Receta.from_orm(rec)
+            if rec.categoria:
+                receta_pydantic.categoria_nombre = rec.categoria.nombre
+            recetas.append(receta_pydantic)
+        return recetas
 
-    def create_receta(self, receta: RecetaCreate):
-        conn = None
-        cursor = None
-        try:
-            conn = get_db_connection()
-            if conn is None:
-                raise ConnectionError("No se pudo conectar a la base de datos.")
-            cursor = conn.cursor()
-            
-            query = ("INSERT INTO recetas (titulo, descripcion, ingredientes, instrucciones, tiempo_preparacion, "
-                     "porciones, dificultad, categoria_id, imagen_url, autor, es_premium) "
-                     "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
-            
-            params = (
-                receta.titulo,
-                receta.descripcion,
-                receta.ingredientes,
-                receta.instrucciones,
-                receta.tiempo_preparacion,
-                receta.porciones,
-                receta.dificultad,
-                receta.categoria_id,
-                receta.imagen_url,
-                receta.autor,
-                receta.es_premium
-            )
-            
-            cursor.execute(query, params)
-            conn.commit()
-            return cursor.lastrowid
+    def get_receta_by_id(self, recipe_id: int) -> Optional[Receta]:
+        receta_db = self.db_session.query(RecetaDB).options(joinedload(RecetaDB.categoria)).filter(RecetaDB.id == recipe_id, RecetaDB.activo == True).first()
+        
+        if receta_db:
+            receta_pydantic = Receta.from_orm(receta_db)
+            if receta_db.categoria:
+                receta_pydantic.categoria_nombre = receta_db.categoria.nombre
+            return receta_pydantic
+        return None
 
-        except Error as e:
-            raise RuntimeError(f"Error de base de datos al crear la receta: {e}")
-        finally:
-            if cursor: cursor.close()
-            if conn and conn.is_connected(): conn.close()
+    def create_receta(self, receta: RecetaCreate) -> int:
+        receta_db = RecetaDB(**receta.dict())
+        self.db_session.add(receta_db)
+        self.db_session.commit()
+        self.db_session.refresh(receta_db)
+        return receta_db.id
 
 receta_repository = RecetaRepository()
 
 # --- Rutas para Categorías ---
 @recetas_bp.route("/categorias", methods=['GET'])
 def obtener_categorias():
-    """Obtiene una lista de todas las categorías."""
+    """Obtiene una lista de todas las categorías.""" 
     try:
         categorias = categoria_repository.get_all_categorias()
         return jsonify([cat.dict() for cat in categorias])
-    except RuntimeError as e:
+    except Exception as e:
         abort(500, description=f"Error interno del servidor: {e}")
-    except ConnectionError as e:
-        abort(500, description=f"Error de conexión a la base de datos: {e}")
 
 # --- Rutas para Recetas ---
 @recetas_bp.route("/", methods=['GET'])
@@ -169,10 +87,8 @@ def obtener_recetas():
     try:
         recetas = receta_repository.get_all_recetas(search_term)
         return jsonify([rec.dict() for rec in recetas])
-    except RuntimeError as e:
+    except Exception as e:
         abort(500, description=f"Error interno del servidor: {e}")
-    except ConnectionError as e:
-        abort(500, description=f"Error de conexión a la base de datos: {e}")
 
 @recetas_bp.route("/<int:recipe_id>", methods=['GET'])
 def obtener_receta_por_id(recipe_id):
@@ -182,14 +98,15 @@ def obtener_receta_por_id(recipe_id):
         if receta is None:
             abort(404, description="Receta no encontrada.")
         return jsonify(receta.dict())
-    except RuntimeError as e:
+    except Exception as e:
         abort(500, description=f"Error interno del servidor: {e}")
-    except ConnectionError as e:
-        abort(500, description=f"Error de conexión a la base de datos: {e}")
 
 @recetas_bp.route("/", methods=['POST'])
 def crear_receta():
     """Crea una nueva receta."""
+    if not request.is_json:
+        abort(400, description="La solicitud debe ser de tipo JSON.")
+        
     try:
         receta_data = RecetaCreate(**request.get_json())
     except Exception as e:
@@ -198,7 +115,5 @@ def crear_receta():
     try:
         new_recipe_id = receta_repository.create_receta(receta_data)
         return jsonify({"success": True, "message": "Receta creada exitosamente", "id": new_recipe_id}), 201
-    except RuntimeError as e:
+    except Exception as e:
         abort(500, description=f"Error de base de datos al crear la receta: {e}")
-    except ConnectionError as e:
-        abort(500, description=f"Error de conexión a la base de datos: {e}")

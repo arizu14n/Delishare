@@ -106,6 +106,20 @@ function showError(message) {
   }, 5000)
 }
 
+async function showConfirmation(title, text) {
+  const result = await Swal.fire({
+    title: title,
+    text: text,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Sí, confirmar!',
+    cancelButtonText: 'Cancelar'
+  });
+  return result.isConfirmed;
+}
+
 // Cerrar modal
 function closeModal(modalId) {
   const modal = document.getElementById(modalId)
@@ -118,5 +132,6 @@ function closeModal(modalId) {
 window.logout = logout
 window.showSuccess = showSuccess
 window.showError = showError
+window.showConfirmation = showConfirmation
 window.closeModal = closeModal
 window.currentUser = currentUser

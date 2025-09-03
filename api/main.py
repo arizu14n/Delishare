@@ -4,12 +4,13 @@ from flask_cors import CORS
 from .routers.recetas import recetas_bp
 from .routers.auth import auth_bp
 from .routers.suscripcion import suscripcion_bp
+from .database import close_db_session
 
 # Crear la instancia de la aplicación Flask
 app = Flask(__name__)
 
 # Configurar CORS para permitir todas las fuentes
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Registrar los Blueprints
 app.register_blueprint(recetas_bp, url_prefix='/recetas')
@@ -35,6 +36,10 @@ def handle_errors(e):
         "success": False,
         "error": description
     }), code
+
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    close_db_session(exception)
 
 # Punto de entrada para ejecutar la aplicación
 if __name__ == '__main__':
