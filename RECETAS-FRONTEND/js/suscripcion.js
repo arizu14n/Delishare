@@ -10,11 +10,11 @@ function updateSubscriptionInterface() {
   if (!currentUser) {
     // Usuario no logueado: todos los planes premium redirigen a login
     if (monthlyButton) monthlyButton.onclick = () => {
-      showError("Debes iniciar sesión para suscribirte");
+      showError("Acción requerida", "Debes iniciar sesión para suscribirte.");
       setTimeout(() => { window.location.href = "login.html"; }, 2000);
     };
     if (annualButton) annualButton.onclick = () => {
-      showError("Debes iniciar sesión para suscribirte");
+      showError("Acción requerida", "Debes iniciar sesión para suscribirte.");
       setTimeout(() => { window.location.href = "login.html"; }, 2000);
     };
     if (freeButton) {
@@ -91,7 +91,7 @@ async function loadPlans() {
     }
   } catch (error) {
     console.error("Error al cargar planes:", error);
-    showError("Error al cargar los planes de suscripción");
+    showError("Error", "No se pudieron cargar los planes de suscripción. Inténtalo de nuevo más tarde.");
   }
 }
 
@@ -148,31 +148,32 @@ function displayPlans() {
 // Seleccionar plan de suscripción
 async function selectPlan(planName) {
   if (!currentUser) {
-    showError("Debes iniciar sesión para suscribirte");
+    showError("Acción requerida", "Debes iniciar sesión para suscribirte.");
     setTimeout(() => { window.location.href = "login.html"; }, 2000);
     return;
   }
 
   const selectedPlan = allPlans.find(p => p.nombre.toLowerCase() === planName);
   if (!selectedPlan) {
-    showError("Plan no encontrado.");
+    showError("Error", "El plan seleccionado no fue encontrado.");
     return;
   }
 
   if (currentUser.tipo_suscripcion === "premium" && currentUser.suscripcion_activa) {
     // Lógica para cambiar de plan o si ya es premium
     if (selectedPlan.duracion_dias === (currentUser.fecha_vencimiento && (new Date(currentUser.fecha_vencimiento) - new Date(currentUser.fecha_suscripcion)) / (1000 * 60 * 60 * 24) > 30 ? 365 : 30)) {
-      showError("Ya tienes este plan premium activo.");
+      showInfo("Plan actual", "Ya tienes este plan premium activo.");
       return;
     }
   }
 
   // Mostrar confirmación
-  if (
-    !confirm(
-      `¿Confirmas la suscripción al plan ${selectedPlan.nombre} ($${selectedPlan.precio}/${selectedPlan.duracion_dias === 30 ? 'mes' : 'año'})?\n\nEsta es una simulación - no se realizará ningún cobro real.`
-    )
-  ) {
+  const confirmed = await showConfirmation(
+    `Confirmar Suscripción`,
+    `Estás a punto de suscribirte al plan ${selectedPlan.nombre} por $${selectedPlan.precio}/${selectedPlan.duracion_dias === 30 ? 'mes' : 'año'}. Esta es una simulación y no se realizará ningún cobro real.`
+  );
+
+  if (!confirmed) {
     return;
   }
 
@@ -209,18 +210,18 @@ async function selectPlan(planName) {
       updateUserInterface();
       updateSubscriptionInterface();
 
-      showSuccess(`¡Suscripción ${selectedPlan.nombre} activada exitosamente! 🎉`);
+      showSuccess("¡Suscripción Activada!", `Tu suscripción al plan ${selectedPlan.nombre} está activa. ¡Disfruta de los beneficios! 🎉`);
 
       // Mostrar mensaje adicional
       setTimeout(() => {
-        showSuccess("Ahora puedes ver todas las recetas completas paso a paso");
+        showInfo("¡Beneficios Desbloqueados!", "Ahora puedes ver todas las recetas completas paso a paso.");
       }, 2000);
     } else {
-      showError(result.description || "Error al procesar la suscripción");
+      showError("Error en la suscripción", result.error || "No se pudo procesar tu suscripción. Por favor, inténtalo de nuevo.");
     }
   } catch (error) {
     console.error("Error en suscripción:", error);
-    showError("Error de conexión al procesar la suscripción");
+    showError("Error de conexión", "No se pudo conectar con el servidor para procesar la suscripción.");
   } finally {
     // Restaurar botón
     const button = document.getElementById(selectedPlan.nombre.toLowerCase() + "Button");
@@ -233,5 +234,3 @@ async function selectPlan(planName) {
 
 // Hacer funciones globales
 window.selectPlan = selectPlan;
-window.showError = showError; // Asegurarse de que showError esté disponible globalmente
-window.showSuccess = showSuccess; // Asegurarse de que showSuccess esté disponible globalmente

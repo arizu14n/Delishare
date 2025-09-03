@@ -3,8 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const savedUser = localStorage.getItem("currentUser");
   if (savedUser) {
-    console.log("Ya hay un usuario logueado.");
-    alert("Ya tienes una sesión iniciada");
+    showInfo("Sesión ya iniciada", "Ya tienes una sesión activa. Serás redirigido a la página de inicio.");
+    setTimeout(() => { window.location.href = "inicio.html"; }, 2000);
   }
 });
 
@@ -29,7 +29,7 @@ async function handleLogin(e) {
   const password = document.getElementById("loginPassword").value.trim();
 
   if (!email || !password) {
-    alert("Por favor completa todos los campos");
+    showError("Campos incompletos", "Por favor, completa tu email y contraseña.");
     return;
   }
 
@@ -55,17 +55,22 @@ async function handleLogin(e) {
 
     if (response.ok) {
       localStorage.setItem("currentUser", JSON.stringify(result.user));
-      document.getElementById("overlay").style.display = "flex";
-
-      setTimeout(() => {
-        window.location.href = "inicio.html";
-      }, 1500);
+      Swal.fire({
+        title: '¡Bienvenido!',
+        text: 'Has iniciado sesión correctamente.',
+        icon: 'success',
+        timer: 1500,
+        showConfirmButton: false,
+        willClose: () => {
+          window.location.href = "inicio.html";
+        }
+      });
     } else {
-      alert(result.description || "Error al iniciar sesión");
+      showError("Error al iniciar sesión", result.error || "Email o contraseña incorrectos.");
     }
   } catch (error) {
     console.error("Error en login:", error);
-    alert("Error de conexión. Verifica que el servidor esté funcionando.");
+    showError("Error de conexión", "No se pudo conectar con el servidor. Por favor, inténtalo más tarde.");
   } finally {
     submitButton.textContent = originalText;
     submitButton.disabled = false;
@@ -75,21 +80,20 @@ async function handleLogin(e) {
 // Manejar registro
 async function handleRegister(e) {
   e.preventDefault();
-  hideMessages();
 
   const nombre = document.getElementById("registerName").value.trim();
   const email = document.getElementById("registerEmail").value.trim();
   const password = document.getElementById("registerPassword").value.trim();
 
   if (!nombre || !email || !password) {
-    alert("Por favor completa todos los campos.");
+    showError("Campos incompletos", "Por favor, completa todos los campos para registrarte.");
     return;
   }
 
   // Validación de contraseña con RegEx como pide la consigna
   const passwordRegex = /^[a-zA-Z0-9!@#$%^&*]{8,20}$/;
   if (!passwordRegex.test(password)) {
-    alert("La contraseña debe tener entre 8 y 20 caracteres y no contener espacios. Puede incluir letras, números y los símbolos !@#$%^&*");
+    showError("Contraseña no válida", "La contraseña debe tener entre 8 y 20 caracteres, sin espacios. Puede incluir letras, números y los símbolos !@#$%^&*");
     return;
   }
 
@@ -116,43 +120,24 @@ async function handleRegister(e) {
 
     if (response.ok) {
       localStorage.setItem("currentUser", JSON.stringify(result.user));
-      alert("¡Cuenta creada exitosamente! Redirigiendo a tu inicio...");
-      setTimeout(() => (window.location.href = "inicio.html"), 2000);
+      Swal.fire({
+        title: '¡Cuenta Creada!',
+        text: 'Tu cuenta ha sido creada exitosamente. Serás redirigido a la página de inicio.',
+        icon: 'success',
+        timer: 2000,
+        showConfirmButton: false,
+        willClose: () => {
+          window.location.href = "inicio.html";
+        }
+      });
     } else {
-      const message = result.error || "Error al crear la cuenta.";
-      alert(message);
+      showError("Error en el registro", result.error || "No se pudo crear la cuenta. Inténtalo de nuevo.");
     }
   } catch (error) {
     console.error("Error en registro:", error);
-    alert("Error de conexión. Verifica que el servidor esté funcionando.");
+    showError("Error de conexión", "No se pudo conectar con el servidor. Por favor, inténtalo más tarde.");
   } finally {
     submitButton.textContent = originalText;
     submitButton.disabled = false;
   }
-}
-
-// Funciones auxiliares
-function showError(message) {
-  const errorElement = document.getElementById("error");
-  if (errorElement) {
-    errorElement.textContent = message;
-    errorElement.style.display = "block";
-    setTimeout(() => (errorElement.style.display = "none"), 4000);
-  }
-}
-
-function showSuccess(message) {
-  const successElement = document.getElementById("success");
-  if (successElement) {
-    successElement.textContent = message;
-    successElement.style.display = "block";
-    setTimeout(() => (successElement.style.display = "none"), 4000);
-  }
-}
-
-function hideMessages() {
-  ["error", "success"].forEach((id) => {
-    const el = document.getElementById(id);
-    if (el) el.style.display = "none";
-  });
 }
