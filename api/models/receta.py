@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, func
@@ -12,8 +12,6 @@ class RecetaBase(BaseModel):
     descripcion: Optional[str] = None
     ingredientes: str
     instrucciones: str
-    tiempo_preparacion: Optional[int] = 0
-    porciones: Optional[int] = 1
     dificultad: Optional[str] = 'Fácil'
     categoria_id: int
     imagen_url: Optional[str] = None
@@ -24,7 +22,8 @@ class RecetaBase(BaseModel):
 
 # Modelo para la creación de una receta (lo que se espera en un POST)
 class RecetaCreate(RecetaBase):
-    pass
+    tiempo_preparacion: int = Field(..., gt=0, le=240)
+    porciones: int = Field(..., gt=0, le=20)
 
 # Modelo para la respuesta de la API (lo que se devuelve en un GET)
 class Receta(RecetaBase):

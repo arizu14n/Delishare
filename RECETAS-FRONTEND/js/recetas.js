@@ -69,6 +69,22 @@ function setupRecipesEventListeners() {
   if (addRecipeForm) {
     addRecipeForm.addEventListener("submit", submitNewRecipe)
   }
+
+  // Validación en tiempo real para campos numéricos
+  const recipePrepTimeInput = document.getElementById("recipePrepTime");
+  const recipeServingsInput = document.getElementById("recipeServings");
+
+  if (recipePrepTimeInput) {
+    recipePrepTimeInput.addEventListener('input', (e) => {
+      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+    });
+  }
+
+  if (recipeServingsInput) {
+    recipeServingsInput.addEventListener('input', (e) => {
+      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+    });
+  }
 }
 
 // Aplicar filtros
@@ -482,6 +498,26 @@ async function submitNewRecipe(event) {
   if (!recipeTitle || !recipeIngredients || !recipeInstructions || !recipePrepTime || !recipeServings || !recipeAuthor) {
     showError("Por favor, completa todos los campos obligatorios.")
     return
+  }
+
+  // Validación para tiempo_preparacion
+  if (!/^\d+$/.test(recipePrepTime) || parseInt(recipePrepTime, 10) <= 0) {
+    showError("El tiempo de preparación debe ser un número entero positivo.");
+    return;
+  }
+  if (parseInt(recipePrepTime, 10) > 240) {
+    showError("El tiempo de preparación no puede ser mayor a 240 minutos.");
+    return;
+  }
+
+  // Validación para porciones
+  if (!/^\d+$/.test(recipeServings) || parseInt(recipeServings, 10) <= 0) {
+    showError("Las porciones deben ser un número entero positivo.");
+    return;
+  }
+  if (parseInt(recipeServings, 10) > 20) {
+    showError("Las porciones no pueden ser mayores a 20.");
+    return;
   }
 
   const newRecipeData = {
