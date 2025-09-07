@@ -74,15 +74,26 @@ function setupRecipesEventListeners() {
   const recipePrepTimeInput = document.getElementById("recipePrepTime");
   const recipeServingsInput = document.getElementById("recipeServings");
 
+  const validateNumericInput = (event, maxValue) => {
+    let value = event.target.value.replace(/[^0-9]/g, '');
+    if (value) {
+      let numericValue = parseInt(value, 10);
+      if (numericValue > maxValue) {
+        value = maxValue.toString();
+      }
+    }
+    event.target.value = value;
+  };
+
   if (recipePrepTimeInput) {
     recipePrepTimeInput.addEventListener('input', (e) => {
-      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+      validateNumericInput(e, 240);
     });
   }
 
   if (recipeServingsInput) {
     recipeServingsInput.addEventListener('input', (e) => {
-      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+      validateNumericInput(e, 20);
     });
   }
 }
