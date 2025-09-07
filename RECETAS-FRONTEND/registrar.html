@@ -28,7 +28,7 @@
       <form id="registerForm">
         <div class="form-group">
           <label for="registerName">Nombre completo</label>
-          <input type="text" id="registerName" required />
+          <input type="text" id="registerName" required pattern="^[a-zA-Z\s]{3,50}$" title="El nombre debe tener entre 3 y 50 caracteres, y solo puede contener letras y espacios." />
         </div>
         <div class="form-group">
           <label for="registerEmail">Correo electrónico</label>

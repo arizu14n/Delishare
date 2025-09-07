@@ -5,7 +5,7 @@ from sqlalchemy import Column, Integer, String, Boolean, DateTime, Date, func
 from ..database import Base
 
 class UsuarioBase(BaseModel):
-    nombre: str
+    nombre: str = Field(..., min_length=3, max_length=50, pattern="^[a-zA-Z\s]+$")
     email: EmailStr
     tipo_suscripcion: Optional[str] = 'gratuito'
     fecha_suscripcion: Optional[date] = None

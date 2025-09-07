@@ -41,7 +41,7 @@
                 </div>
                 <div class="form-group">
                     <label for="loginPassword">Contraseña</label>
-                    <input type="password" id="loginPassword" required>
+                    <input type="password" id="loginPassword" required pattern="^[a-zA-Z0-9!@#$%^&*]{8,20}$" title="La contraseña debe tener entre 8 y 20 caracteres, y puede contener letras, números y los símbolos !@#$%^&*">
                 </div>
                 <button type="submit" class="btn-primary btn-large">
                     <i class="fas fa-sign-in-alt"></i>

@@ -93,23 +93,23 @@
             <form id="addRecipeForm">
                 <div class="form-group">
                     <label for="recipeTitle">Título de la Receta:</label>
-                    <input type="text" id="recipeTitle" required>
+                    <input type="text" id="recipeTitle" required pattern=".{5,100}" title="El título debe tener entre 5 y 100 caracteres.">
                 </div>
                 <div class="form-group">
                     <label for="recipeDescription">Descripción:</label>
-                    <textarea id="recipeDescription" rows="3"></textarea>
+                    <textarea id="recipeDescription" rows="3" maxlength="500"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="recipeIngredients">Ingredientes (uno por línea):</label>
-                    <textarea id="recipeIngredients" rows="6" required></textarea>
+                    <textarea id="recipeIngredients" rows="6" required maxlength="2000"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="recipeInstructions">Instrucciones (un paso por línea):</label>
-                    <textarea id="recipeInstructions" rows="8" required></textarea>
+                    <textarea id="recipeInstructions" rows="8" required maxlength="5000"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="recipePrepTime">Tiempo de Preparación (Máx. 240 minutos):</label>
-                    <input type="number" id="recipePrepTime" min="1" max="240"" required>
+                    <input type="number" id="recipePrepTime" min="1" max="240" required>
                 </div>
                 <div class="form-group">
                     <label for="recipeServings">Porciones: (Máx: 20)</label>
@@ -130,11 +130,11 @@
                 </div>
                 <div class="form-group">
                     <label for="recipeImageUrl">URL de la Imagen:</label>
-                    <input type="url" id="recipeImageUrl">
+                    <input type="url" id="recipeImageUrl" maxlength="500">
                 </div>
                 <div class="form-group">
                     <label for="recipeAuthor">Autor:</label>
-                    <input type="text" id="recipeAuthor" required>
+                    <input type="text" id="recipeAuthor" required pattern=".{3,100}" title="El autor debe tener entre 3 y 100 caracteres.">
                 </div>
                 <div class="form-group checkbox-group">
                     <input type="checkbox" id="recipeIsPremium">

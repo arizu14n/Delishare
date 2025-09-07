@@ -483,17 +483,17 @@ function closeAddRecipeModal() {
 async function submitNewRecipe(event) {
   event.preventDefault()
 
-  const recipeTitle = document.getElementById("recipeTitle").value.trim()
-  const recipeDescription = document.getElementById("recipeDescription").value.trim()
-  const recipeIngredients = document.getElementById("recipeIngredients").value.trim()
-  const recipeInstructions = document.getElementById("recipeInstructions").value.trim()
-  const recipePrepTime = document.getElementById("recipePrepTime").value.trim()
-  const recipeServings = document.getElementById("recipeServings").value.trim()
-  const recipeDifficulty = document.getElementById("recipeDifficulty").value
-  const recipeCategory = document.getElementById("recipeCategory").value
-  const recipeImageUrl = document.getElementById("recipeImageUrl").value.trim()
-  const recipeAuthor = document.getElementById("recipeAuthor").value.trim()
-  const recipeIsPremium = document.getElementById("recipeIsPremium").checked
+  const recipeTitle = DOMPurify.sanitize(document.getElementById("recipeTitle").value.trim());
+  const recipeDescription = DOMPurify.sanitize(document.getElementById("recipeDescription").value.trim());
+  const recipeIngredients = DOMPurify.sanitize(document.getElementById("recipeIngredients").value.trim());
+  const recipeInstructions = DOMPurify.sanitize(document.getElementById("recipeInstructions").value.trim());
+  const recipePrepTime = DOMPurify.sanitize(document.getElementById("recipePrepTime").value.trim());
+  const recipeServings = DOMPurify.sanitize(document.getElementById("recipeServings").value.trim());
+  const recipeDifficulty = DOMPurify.sanitize(document.getElementById("recipeDifficulty").value);
+  const recipeCategory = DOMPurify.sanitize(document.getElementById("recipeCategory").value);
+  const recipeImageUrl = DOMPurify.sanitize(document.getElementById("recipeImageUrl").value.trim());
+  const recipeAuthor = DOMPurify.sanitize(document.getElementById("recipeAuthor").value.trim());
+  const recipeIsPremium = document.getElementById("recipeIsPremium").checked;
 
   if (!recipeTitle || !recipeIngredients || !recipeInstructions || !recipePrepTime || !recipeServings || !recipeAuthor) {
     showError("Por favor, completa todos los campos obligatorios.")

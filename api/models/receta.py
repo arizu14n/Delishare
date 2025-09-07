@@ -8,14 +8,14 @@ from ..database import Base
 
 # Modelo base con los campos comunes de una receta
 class RecetaBase(BaseModel):
-    titulo: str
-    descripcion: Optional[str] = None
-    ingredientes: str
-    instrucciones: str
+    titulo: str = Field(..., min_length=5, max_length=100)
+    descripcion: Optional[str] = Field(None, max_length=500)
+    ingredientes: str = Field(..., max_length=2000)
+    instrucciones: str = Field(..., max_length=5000)
     dificultad: Optional[str] = 'Fácil'
     categoria_id: int
-    imagen_url: Optional[str] = None
-    autor: Optional[str] = 'Anónimo'
+    imagen_url: Optional[str] = Field(None, max_length=500)
+    autor: Optional[str] = Field('Anónimo', max_length=100)
     es_premium: Optional[bool] = False
     activo: Optional[bool] = True
     updated_at: Optional[datetime] = None
@@ -28,6 +28,8 @@ class RecetaCreate(RecetaBase):
 # Modelo para la respuesta de la API (lo que se devuelve en un GET)
 class Receta(RecetaBase):
     id: int
+    tiempo_preparacion: Optional[int] = None
+    porciones: Optional[int] = None
     categoria_nombre: Optional[str] = None # Se obtendrá con un JOIN
     vistas: int
     likes: int

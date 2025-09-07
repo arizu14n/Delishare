@@ -81,9 +81,9 @@ async function handleLogin(e) {
 async function handleRegister(e) {
   e.preventDefault();
 
-  const nombre = document.getElementById("registerName").value.trim();
-  const email = document.getElementById("registerEmail").value.trim();
-  const password = document.getElementById("registerPassword").value.trim();
+  const nombre = DOMPurify.sanitize(document.getElementById("registerName").value.trim());
+  const email = DOMPurify.sanitize(document.getElementById("registerEmail").value.trim());
+  const password = DOMPurify.sanitize(document.getElementById("registerPassword").value.trim());
 
   if (!nombre || !email || !password) {
     showError("Campos incompletos", "Por favor, completa todos los campos para registrarte.");

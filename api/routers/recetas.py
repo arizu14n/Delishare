@@ -34,7 +34,8 @@ class RecetaRepository:
         query = self.db_session.query(RecetaDB).options(joinedload(RecetaDB.categoria)).filter(RecetaDB.activo == True)
 
         if search_term:
-            query = query.filter(RecetaDB.titulo.ilike(f"%{search_term}%") | RecetaDB.ingredientes.ilike(f"%{search_term}%"))
+            search_pattern = f"%{search_term}%"
+            query = query.filter(RecetaDB.titulo.ilike(search_pattern) | RecetaDB.ingredientes.ilike(search_pattern))
 
         recetas_db = query.order_by(RecetaDB.created_at.desc()).all()
         
@@ -108,7 +109,7 @@ def crear_receta():
         abort(400, description="La solicitud debe ser de tipo JSON.")
         
     try:
-        receta_data = RecetaCreate(**request.get_json())
+        receta_data = RecetaCreate(**sanitize_input(request.get_json()))
     except Exception as e:
         abort(400, description=f"Datos de entrada inválidos: {e}")
 

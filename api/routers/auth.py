@@ -45,7 +45,7 @@ def register_user():
         abort(400, description="La solicitud debe ser de tipo JSON.")
 
     try:
-        user_data = UsuarioCreate(**request.get_json())
+        user_data = UsuarioCreate(**sanitize_input(request.get_json()))
     except Exception as e:
         abort(400, description=f"Datos de entrada inválidos: {e}")
 
