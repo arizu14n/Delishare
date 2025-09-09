@@ -3,6 +3,12 @@ let allRecipes = []
 let allCategories = []
 let filteredRecipes = []
 
+// Variables para gestionar ingredientes e instrucciones
+let ingredientsArray = [];
+let instructionsArray = [];
+let editingIngredientIndex = -1;
+let editingInstructionIndex = -1;
+
 // Function to show error messages
 function showError(message) {
   const errorContainer = document.getElementById("errorContainer")
@@ -13,9 +19,22 @@ function showError(message) {
 
 // Inicialización de la página de recetas
 document.addEventListener("DOMContentLoaded", () => {
-  initializeRecipesPage()
-  setupRecipesEventListeners()
-})
+    initializeRecipesPage();
+    setupRecipesEventListeners();
+    setupStepByStepInputs(); // Añadir esta línea
+    
+    // Cancelar edición al hacer clic en el botón de cerrar
+    const closeButtons = document.querySelectorAll('.close');
+    closeButtons.forEach(button => {
+        button.addEventListener('click', cancelEditing);
+    });
+});
+
+// Hacer funciones globales
+window.removeIngredient = removeIngredient;
+window.removeInstruction = removeInstruction;
+window.editIngredient = editIngredient;
+window.editInstruction = editInstruction;
 
 async function initializeRecipesPage() {
   try {
@@ -463,32 +482,259 @@ async function handleSearch() {
 
 // Abrir modal para añadir nueva receta
 function openAddRecipeModal() {
-  if (currentUser && currentUser.tipo_suscripcion === "premium" && currentUser.suscripcion_activa) {
-    document.getElementById("addRecipeModal").style.display = "block"
-    document.getElementById("addRecipeForm").reset() 
-    populateAddRecipeCategorySelect(); 
-    const recipeAuthorInput = document.getElementById("recipeAuthor")
-    const recipeIsPremiumCheckbox = document.getElementById("recipeIsPremium")
+    if (currentUser && currentUser.tipo_suscripcion === "premium" && currentUser.suscripcion_activa) {
+        document.getElementById("addRecipeModal").style.display = "block";
+        document.getElementById("addRecipeForm").reset();
+        populateAddRecipeCategorySelect();
+        resetStepByStepInputs(); // Resetear las listas
+        
+        const recipeAuthorInput = document.getElementById("recipeAuthor");
+        const recipeIsPremiumCheckbox = document.getElementById("recipeIsPremium");
 
-    if (recipeAuthorInput && currentUser && currentUser.nombre) {
-      recipeAuthorInput.value = currentUser.nombre; 
-    }
+        if (recipeAuthorInput && currentUser && currentUser.nombre) {
+            recipeAuthorInput.value = currentUser.nombre;
+        }
 
-    if (recipeIsPremiumCheckbox && currentUser && currentUser.tipo_suscripcion === "premium" && currentUser.suscripcion_activa) {
-      recipeIsPremiumCheckbox.checked = true;
+        if (recipeIsPremiumCheckbox && currentUser && currentUser.tipo_suscripcion === "premium" && currentUser.suscripcion_activa) {
+            recipeIsPremiumCheckbox.checked = true;
+        } else {
+            recipeIsPremiumCheckbox.checked = false;
+        }
     } else {
-      recipeIsPremiumCheckbox.checked = false; 
+        showError("Debes ser usuario Premium para agregar recetas.");
     }
-
-  } else {
-    showError("Debes ser usuario Premium para agregar recetas.")
-  }
 }
 
 // Cerrar modal para añadir nueva receta
 function closeAddRecipeModal() {
   document.getElementById("addRecipeModal").style.display = "none"
 }
+
+// Configurar event listeners para ingredientes e instrucciones
+function setupStepByStepInputs() {
+    const addIngredientBtn = document.getElementById("addIngredientBtn");
+    const addInstructionBtn = document.getElementById("addInstructionBtn");
+    const ingredientInput = document.getElementById("ingredientInput");
+    const instructionInput = document.getElementById("instructionInput");
+    
+    if (addIngredientBtn && ingredientInput) {
+        addIngredientBtn.addEventListener("click", addIngredient);
+        ingredientInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                addIngredient();
+            }
+        });
+    }
+    
+    if (addInstructionBtn && instructionInput) {
+        addInstructionBtn.addEventListener("click", addInstruction);
+        instructionInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                addInstruction();
+            }
+        });
+    }
+}
+
+// Añadir ingrediente a la lista
+function addIngredient() {
+    const ingredientInput = document.getElementById("ingredientInput");
+    const addIngredientBtn = document.getElementById("addIngredientBtn");
+    const ingredient = DOMPurify.sanitize(ingredientInput.value.trim());
+    
+    if (!ingredient) return;
+    
+    if (editingIngredientIndex >= 0) {
+        // Modo edición
+        ingredientsArray[editingIngredientIndex] = ingredient;
+        editingIngredientIndex = -1;
+        addIngredientBtn.innerHTML = '<i class="fas fa-plus"></i> Agregar';
+    } else {
+        // Modo agregar
+        ingredientsArray.push(ingredient);
+    }
+    
+    updateIngredientsList();
+    ingredientInput.value = "";
+    ingredientInput.focus();
+}
+
+// Añadir instrucción a la lista
+function addInstruction() {
+    const instructionInput = document.getElementById("instructionInput");
+    const addInstructionBtn = document.getElementById("addInstructionBtn");
+    const instruction = DOMPurify.sanitize(instructionInput.value.trim());
+    
+    if (!instruction) return;
+    
+    if (editingInstructionIndex >= 0) {
+        // Modo edición
+        instructionsArray[editingInstructionIndex] = instruction;
+        editingInstructionIndex = -1;
+        addInstructionBtn.innerHTML = '<i class="fas fa-plus"></i> Agregar';
+    } else {
+        // Modo agregar
+        instructionsArray.push(instruction);
+    }
+    
+    updateInstructionsList();
+    instructionInput.value = "";
+    instructionInput.focus();
+}
+
+// Actualizar lista visual de ingredientes
+function updateIngredientsList() {
+    const ingredientsList = document.getElementById("ingredientsList");
+    const recipeIngredients = document.getElementById("recipeIngredients");
+    
+    if (!ingredientsList) return;
+    
+    ingredientsList.innerHTML = ingredientsArray.map((ingredient, index) => `
+        <div class="list-item">
+            <span class="item-number">${index + 1}.</span>
+            <span class="item-text">${ingredient}</span>
+            <div class="item-actions">
+                <button type="button" class="btn-edit-item" onclick="editIngredient(${index})">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button type="button" class="btn-remove-item" onclick="removeIngredient(${index})">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    `).join("");
+    
+    // Actualizar campo oculto con todos los ingredientes unidos por saltos de línea
+    if (recipeIngredients) {
+        recipeIngredients.value = ingredientsArray.join("\n");
+    }
+}
+
+// Actualizar lista visual de instrucciones
+function updateInstructionsList() {
+    const instructionsList = document.getElementById("instructionsList");
+    const recipeInstructions = document.getElementById("recipeInstructions");
+    
+    if (!instructionsList) return;
+    
+    instructionsList.innerHTML = instructionsArray.map((instruction, index) => `
+        <div class="list-item">
+            <span class="item-number">Paso ${index + 1}:</span>
+            <span class="item-text">${instruction}</span>
+            <div class="item-actions">
+                <button type="button" class="btn-edit-item" onclick="editInstruction(${index})">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button type="button" class="btn-remove-item" onclick="removeInstruction(${index})">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    `).join("");
+    
+    // Actualizar campo oculto con todas las instrucciones unidas por saltos de línea
+    if (recipeInstructions) {
+        recipeInstructions.value = instructionsArray.join("\n");
+    }
+}
+
+// Editar ingrediente
+function editIngredient(index) {
+    const ingredientInput = document.getElementById("ingredientInput");
+    const addIngredientBtn = document.getElementById("addIngredientBtn");
+    
+    ingredientInput.value = ingredientsArray[index];
+    editingIngredientIndex = index;
+    addIngredientBtn.innerHTML = '<i class="fas fa-save"></i> Guardar';
+    ingredientInput.focus();
+}
+
+// Editar instrucción
+function editInstruction(index) {
+    const instructionInput = document.getElementById("instructionInput");
+    const addInstructionBtn = document.getElementById("addInstructionBtn");
+    
+    instructionInput.value = instructionsArray[index];
+    editingInstructionIndex = index;
+    addInstructionBtn.innerHTML = '<i class="fas fa-save"></i> Guardar';
+    instructionInput.focus();
+}
+
+// Eliminar ingrediente
+function removeIngredient(index) {
+    ingredientsArray.splice(index, 1);
+    
+    // Si estábamos editando y eliminamos el elemento editado, cancelar edición
+    if (editingIngredientIndex === index) {
+        editingIngredientIndex = -1;
+        const addIngredientBtn = document.getElementById("addIngredientBtn");
+        const ingredientInput = document.getElementById("ingredientInput");
+        
+        addIngredientBtn.innerHTML = '<i class="fas fa-plus"></i> Agregar';
+        ingredientInput.value = "";
+    }
+    
+    updateIngredientsList();
+}
+
+// Eliminar instrucción
+function removeInstruction(index) {
+    instructionsArray.splice(index, 1);
+    
+    // Si estábamos editando y eliminamos el elemento editado, cancelar edición
+    if (editingInstructionIndex === index) {
+        editingInstructionIndex = -1;
+        const addInstructionBtn = document.getElementById("addInstructionBtn");
+        const instructionInput = document.getElementById("instructionInput");
+        
+        addInstructionBtn.innerHTML = '<i class="fas fa-plus"></i> Agregar';
+        instructionInput.value = "";
+    }
+    
+    updateInstructionsList();
+}
+
+// Limpiar listas al abrir el modal
+function resetStepByStepInputs() {
+    ingredientsArray = [];
+    instructionsArray = [];
+    editingIngredientIndex = -1;
+    editingInstructionIndex = -1;
+    
+    updateIngredientsList();
+    updateInstructionsList();
+    
+    const ingredientInput = document.getElementById("ingredientInput");
+    const instructionInput = document.getElementById("instructionInput");
+    const addIngredientBtn = document.getElementById("addIngredientBtn");
+    const addInstructionBtn = document.getElementById("addInstructionBtn");
+    
+    if (ingredientInput) ingredientInput.value = "";
+    if (instructionInput) instructionInput.value = "";
+    if (addIngredientBtn) addIngredientBtn.innerHTML = '<i class="fas fa-plus"></i> Agregar';
+    if (addInstructionBtn) addInstructionBtn.innerHTML = '<i class="fas fa-plus"></i> Agregar';
+}
+
+// Cancelar edición si se hace clic fuera o se cierra el modal
+function cancelEditing() {
+    const addIngredientBtn = document.getElementById("addIngredientBtn");
+    const addInstructionBtn = document.getElementById("addInstructionBtn");
+    const ingredientInput = document.getElementById("ingredientInput");
+    const instructionInput = document.getElementById("instructionInput");
+    
+    if (editingIngredientIndex >= 0) {
+        editingIngredientIndex = -1;
+        addIngredientBtn.innerHTML = '<i class="fas fa-plus"></i> Agregar';
+        ingredientInput.value = "";
+    }
+    
+    if (editingInstructionIndex >= 0) {
+        editingInstructionIndex = -1;
+        addInstructionBtn.innerHTML = '<i class="fas fa-plus"></i> Agregar';
+        instructionInput.value = "";
+    }
+}
+
 
 // Enviar nueva receta
 async function submitNewRecipe(event) {
@@ -497,7 +743,7 @@ async function submitNewRecipe(event) {
   const recipeTitle = DOMPurify.sanitize(document.getElementById("recipeTitle").value.trim());
   const recipeDescription = DOMPurify.sanitize(document.getElementById("recipeDescription").value.trim());
   const recipeIngredients = DOMPurify.sanitize(document.getElementById("recipeIngredients").value.trim());
-  const recipeInstructions = DOMPurify.sanitize(document.getElementById("recipeInstructions").value.trim());
+const recipeInstructions = DOMPurify.sanitize(document.getElementById("recipeInstructions").value.trim());
   const recipePrepTime = DOMPurify.sanitize(document.getElementById("recipePrepTime").value.trim());
   const recipeServings = DOMPurify.sanitize(document.getElementById("recipeServings").value.trim());
   const recipeDifficulty = DOMPurify.sanitize(document.getElementById("recipeDifficulty").value);
