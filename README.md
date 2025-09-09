@@ -4,9 +4,9 @@
 
 <p>Delishare es una <strong>aplicación web de recetas</strong> que permite a los usuarios explorar, buscar y compartir una amplia variedad de recetas. La plataforma ofrece autenticación de usuarios, gestión de recetas, visualización por categorías y un sistema de suscripción premium para contenido exclusivo.</p>
 
-<p>El proyecto cuenta con un <strong>frontend interactivo</strong> desarrollado con HTML, CSS y JavaScript puro, y un <strong>backend API RESTful</strong> en Python (Flask) conectado a SQLServer.</p
+<p>El proyecto cuenta con un <strong>frontend interactivo</strong> desarrollado con HTML, CSS y JavaScript puro, y un <strong>backend API RESTful</strong> en Python (Flask) conectado a SQLServer.</p>
 
-<h2>Características Principales</h2>
+## Características Principales</h2>
 
 <h3>Usuarios No Registrados</h3>
 <ul>
