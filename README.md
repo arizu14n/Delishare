@@ -1,6 +1,58 @@
 <h1> Delishare: Tu Cocina, Nuestros Secretos 👨‍🍳👩‍🍳</h1>
 
-Este proyecto contiene el backend de Delishare, migrado de PHP a Python (Flask), y su frontend basado en HTML, CSS y JavaScript.
+<h2>Descripción del Proyecto</h2>
+
+<p>Delishare es una <strong>aplicación web de recetas</strong> que permite a los usuarios explorar, buscar y compartir una amplia variedad de recetas. La plataforma ofrece autenticación de usuarios, gestión de recetas, visualización por categorías y un sistema de suscripción premium para contenido exclusivo.</p>
+
+<p>El proyecto cuenta con un <strong>frontend interactivo</strong> desarrollado con HTML, CSS y JavaScript puro, y un <strong>backend API RESTful</strong> en Python (Flask) conectado a SQLServer.</p
+
+<h2>Características Principales</h2>
+
+<h3>Usuarios No Registrados</h3>
+<ul>
+  <li>Explorar todas las recetas gratuitas.</li>
+  <li>Buscar recetas por título, descripción o ingredientes.</li>
+  <li>Filtrar recetas por categoría y dificultad.</li>
+  <li>Ver listados de categorías.</li>
+  <li>Acceder a páginas de inicio de sesión y registro.</li>
+  <li>Conocer planes de suscripción premium.</li>
+</ul>
+
+<h3>Usuarios Registrados (Gratuitos)</h3>
+<ul>
+  <li>Todas las características de usuarios no registrados.</li>
+  <li>Añadir nuevas recetas (no premium por defecto).</li>
+</ul>
+
+<h3>Usuarios Premium</h3>
+<ul>
+  <li>Acceso a todas las recetas, incluyendo las marcadas como premium.</li>
+  <li>Todas las características de los usuarios registrados gratuitos.</li>
+  <li>Posibilidad de marcar sus propias recetas como premium al crearlas.</li>
+</ul>
+
+<h2>Funcionalidades Técnicas</h2>
+<ul>
+  <li>API RESTful para gestión de datos.</li>
+  <li>Autenticación de usuarios segura (hashing de contraseñas).</li>
+  <li>Manejo de CORS para comunicación entre frontend y backend.</li>
+  <li>Simulación de activación de suscripciones premium.</li>
+  <li>Interfaz interactiva y responsiva.</li>
+</ul>
+
+<h3>Backend</h3>
+<ul>
+  <li><strong>Python</strong>: Lenguaje principal.</li>
+  <li><strong>SQLServer</strong>: Base de datos relacional.</li>
+</ul>
+
+<h3>Frontend</h3>
+<ul>
+  <li><strong>HTML5</strong>: Estructura de las páginas web.</li>
+  <li><strong>CSS3</strong>: Estilos y diseño visual.</li>
+  <li><strong>JavaScript (Vanilla JS)</strong>: Lógica interactiva, manejo de API y DOM.</li>
+  <li><strong>Font Awesome</strong>: Iconos y elementos visuales.</li>
+</ul>
 
 ## Requisitos
 
