@@ -1,3 +1,21 @@
+/* Estructura principal de la página */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1 0 auto;
+    width: 100%;
+}
+
 /* Filtros */
 .filters {
   display: flex;
@@ -28,6 +46,15 @@
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2rem;
   margin-top: 2rem;
+  min-height: 300px;
+}
+
+/* Mensaje cuando no hay recetas */
+.no-recipes {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    color: var(--gray-dark);
 }
 
 .recipe-card {
@@ -194,6 +221,7 @@
 .recipes-section {
   padding: 4rem 0;
   background-color: var(--light-color);
+  min-height: 75vh;
 }
 
 * Estilos para pasos de instrucciones */
@@ -541,4 +569,107 @@
 .user-badge.free {
   background-color: var(--gradient-primary);
   color: var(--black);
+}
+
+/* Estilos para la entrada paso a paso */
+.step-input-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.step-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.btn-step-add {
+    padding: 10px 15px;
+    background: var(--gradient-primary);
+  color: var(--white);
+    border: none;
+    border-radius: var(--border-radius, 5px);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    justify-content: center;
+    white-space: nowrap;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.btn-step-add:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.items-list {
+    border: 1px solid #eee;
+    border-radius: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.list-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 8px;
+    border-bottom: 1px solid #f0f0f0;
+    gap: 10px;
+}
+
+.list-item:last-child {
+    border-bottom: none;
+}
+
+.item-number {
+    font-weight: bold;
+    min-width: 30px;
+}
+
+.item-text {
+    flex: 1;
+    word-break: break-word;
+}
+
+.item-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.btn-edit-item, .btn-remove-item {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.btn-edit-item {
+    color: #17a2b8;
+}
+
+.btn-edit-item:hover {
+    background: #17a2b8;
+    color: white;
+}
+
+.btn-remove-item {
+    color: #dc3545;
+}
+
+.btn-remove-item:hover {
+    background: #dc3545;
+    color: white;
+}
+
+/* Estilos para el modo edición */
+.editing-mode .btn-step-add {
+    background: #28a745;
+}
+
+.editing-mode .btn-step-add:hover {
+    background: #218838;
 }
