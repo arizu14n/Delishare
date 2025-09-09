@@ -104,6 +104,7 @@ async function handleLogin(e) {
 async function handleRegister(e) {
   e.preventDefault();
 
+
   const nombre = DOMPurify.sanitize(document.getElementById("registerName").value.trim());
   const email = DOMPurify.sanitize(document.getElementById("registerEmail").value.trim());
   const password = DOMPurify.sanitize(document.getElementById("registerPassword").value.trim());
@@ -172,11 +173,15 @@ async function handleRegister(e) {
         }
       });
     } else {
-      showError("Error en el registro", result.error || "No se pudo crear la cuenta. Inténtalo de nuevo.");
+      Swal.fire({
+        title: 'Error en el registro',
+        text: result.error || "No se pudo crear la cuenta. Inténtalo de nuevo.",
+        icon: 'error',
+        showConfirmButton: true
+      });
     }
   } catch (error) {
     console.error("Error en registro:", error);
-    showError("", "No se pudo conectar con el servidor. Por favor, inténtalo más tarde.");
     Swal.fire({
         title: '¡Error de conexión!',
         text: 'No se pudo conectar con el servidor. Por favor, inténtalo más tarde.',

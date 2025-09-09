@@ -3,6 +3,7 @@ from werkzeug.exceptions import HTTPException
 import re
 from passlib.context import CryptContext
 from datetime import date
+from ..utils import sanitize_input
 
 from ..database import get_db_session
 from ..models.usuario import UsuarioCreate, Usuario, UsuarioInDB, UsuarioDB
