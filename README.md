@@ -1,4 +1,4 @@
-# Delishare - Backend Python (Flask) y Frontend (HTML/CSS/JS)
+<h1> Delishare: Tu Cocina, Nuestros Secretos 👨‍🍳👩‍🍳</h1>
 
 Este proyecto contiene el backend de Delishare, migrado de PHP a Python (Flask), y su frontend basado en HTML, CSS y JavaScript.
 
