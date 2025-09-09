@@ -73,7 +73,14 @@ function logout() {
   currentUser = null
   localStorage.removeItem("currentUser")
   updateUserInterface()
-  showSuccess("Sesión cerrada correctamente")
+
+  Swal.fire({
+    title: '¡Éxito!',
+    text: 'Has cerrado sesión correctamente.',
+    icon: 'success',
+    showConfirmButton: false
+
+  });
 
   // Redirigir al inicio
   setTimeout(() => {

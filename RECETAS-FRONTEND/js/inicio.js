@@ -23,7 +23,12 @@ async function initializeHomePage() {
     displayFeaturedCategories();
   } catch (error) {
     console.error("Error al inicializar página de inicio:", error);
-    showError("Error al cargar los datos iniciales");
+    Swal.fire({
+      title: '¡Error!',
+      text: 'Error al cargar los datos iniciales.',
+      icon: 'error',
+      showConfirmButton: true
+    });
   }
 }
 
@@ -85,7 +90,12 @@ async function loadCategories() {
     }
   } catch (error) {
     console.error("Error al cargar categorías:", error)
-    showError("Error al cargar las categorías")
+    Swal.fire({
+      title: '¡Error!',
+      text: 'Error al cargar las categorías.',
+      icon: 'error',
+      showConfirmButton: true
+    });
   }
 }
 

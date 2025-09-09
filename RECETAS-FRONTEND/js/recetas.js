@@ -45,7 +45,12 @@ async function initializeRecipesPage() {
     checkSavedFilters()
   } catch (error) {
     console.error("Error al inicializar página de recetas:", error)
-    showError("Error al cargar los datos")
+    Swal.fire({
+      title: '¡Error!',
+      text: 'Error al cargar los datos.',
+      icon: 'error',
+      showConfirmButton: true
+    });
   }
 }
 
@@ -204,7 +209,12 @@ async function loadCategories() {
     }
   } catch (error) {
     console.error("Error al cargar categorías:", error)
-    showError("Error al cargar las categorías")
+    Swal.fire({
+        title: '¡Error!',
+        text: 'Error al cargar las categorías.',
+        icon: 'error',
+        showConfirmButton: true
+      });
   }
 }
 
@@ -243,7 +253,12 @@ async function loadRecipes() {
     }
   } catch (error) {
     console.error("Error al cargar recetas:", error)
-    showError("Error al cargar las recetas")
+    Swal.fire({
+        title: '¡Error!',
+        text: 'Error al cargar las recetas.',
+        icon: 'error',
+        showConfirmButton: true
+      });
   }
 }
 
@@ -375,7 +390,12 @@ async function showRecipeDetails(recipeId) {
     const recipe = await response.json()
 
     if (recipe.message) {
-      showError("Receta no encontrada")
+      Swal.fire({
+        title: '¡Error!',
+        text: 'Receta no encontrada.',
+        icon: 'error',
+        showConfirmButton: true
+      });
       return
     }
 
@@ -450,7 +470,12 @@ async function showRecipeDetails(recipeId) {
     document.getElementById("recipeModal").style.display = "block"
   } catch (error) {
     console.error("Error al cargar detalles de la receta:", error)
-    showError("Error al cargar los detalles de la receta")
+    Swal.fire({
+        title: '¡Error!',
+        text: 'Error al cargar los detalles de la receta.',
+        icon: 'error',
+        showConfirmButton: true
+      });
   }
 }
 
@@ -476,7 +501,12 @@ async function handleSearch() {
     }
   } catch (error) {
     console.error("Error en la búsqueda:", error)
-    showError("Error al realizar la búsqueda")
+    Swal.fire({
+        title: '¡Error!',
+        text: 'Error al realizar la búsqueda.',
+        icon: 'error',
+        showConfirmButton: true
+      });
   }
 }
 
@@ -735,7 +765,6 @@ function cancelEditing() {
     }
 }
 
-
 // Enviar nueva receta
 async function submitNewRecipe(event) {
   event.preventDefault()
@@ -743,7 +772,7 @@ async function submitNewRecipe(event) {
   const recipeTitle = DOMPurify.sanitize(document.getElementById("recipeTitle").value.trim());
   const recipeDescription = DOMPurify.sanitize(document.getElementById("recipeDescription").value.trim());
   const recipeIngredients = DOMPurify.sanitize(document.getElementById("recipeIngredients").value.trim());
-const recipeInstructions = DOMPurify.sanitize(document.getElementById("recipeInstructions").value.trim());
+  const recipeInstructions = DOMPurify.sanitize(document.getElementById("recipeInstructions").value.trim());
   const recipePrepTime = DOMPurify.sanitize(document.getElementById("recipePrepTime").value.trim());
   const recipeServings = DOMPurify.sanitize(document.getElementById("recipeServings").value.trim());
   const recipeDifficulty = DOMPurify.sanitize(document.getElementById("recipeDifficulty").value);
@@ -804,17 +833,33 @@ const newRecipeData = {
       const result = await response.json(); 
       console.log("Respuesta del servidor:", result); 
 
-      showSuccess("¡Nueva receta guardada!") 
+      Swal.fire({
+        title: '¡Receta agregada!',
+        text: 'Tu receta ha sido agregada exitosamente.',
+        icon: 'success',
+        showConfirmButton: false,
+        timer: 2000
+      });
       document.getElementById("addRecipeForm").reset() 
       closeAddRecipeModal() 
       await loadRecipes() 
     } else {
       const errorResult = await response.json();
-      showError(errorResult.message || "Error al agregar la receta. Por favor, inténtalo de nuevo.")
+      Swal.fire({
+        title: '¡Error!',
+        text: errorResult.message || "Error al agregar la receta. Por favor, inténtalo de nuevo.",
+        icon: 'error',
+        showConfirmButton: true
+      });
     }
   } catch (error) {
     console.error("Error al enviar nueva receta:", error)
-    showError("Error de conexión al agregar la receta.")
+    Swal.fire({
+        title: '¡Error!',
+        text: 'Error de conexión al agregar la receta.',
+        icon: 'error',
+        showConfirmButton: true
+      });
   }
 }
 
