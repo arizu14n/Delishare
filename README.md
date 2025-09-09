@@ -7,26 +7,28 @@ Este proyecto contiene el backend de Delishare, migrado de PHP a Python (Flask),
 Asegúrate de tener instalado lo siguiente:
 
 *   **Python 3.8+**
-*   **MySQL Server** (o MariaDB)
-*   **Cliente de línea de comandos de MySQL** (asegúrate de que `mysql` esté en tu PATH o conoce su ruta completa)
+*   **SQL Server** (2016 o superior)
+*   **ODBC Driver** (17+ para SQL Server)
+*   **Herramientas de SQL Server ** (SSMS opcional para gestión)
 
 ## Configuración del Proyecto
 
 1.  **Clonar el Repositorio:**
     ```bash
-    git clone <URL_DEL_REPOSITORIO>
+    git clone <https://github.com/arizu14n/Delishare>
     cd Delishare
     ```
 
 2.  **Configurar Variables de Entorno:**
-    Crea un archivo `.env` en la raíz del proyecto (`Delishare/`) con el siguiente contenido. Asegúrate de reemplazar los valores con tus credenciales de MySQL.
+    Crea un archivo `.env` en la raíz del proyecto (`Delishare/`) con el siguiente contenido. Asegúrate de reemplazar los valores con tus credenciales de SQLServer.
 
     ```
     DB_HOST="localhost"
-    DB_USER="root"
-    DB_PASSWORD=""
+    DB_USER="sa"
+    DB_PASSWORD="tu_password_sql_server"
+    DB_NAME="delishare_db"
+    DB_DRIVER="ODBC Driver 17 for SQL Server"
     ```
-    *(Nota: `DB_NAME` se gestiona internamente por el script de configuración de la base de datos.)*
 
 3.  **Instalar Dependencias de Python:**
     ```bash
@@ -65,7 +67,16 @@ El backend de Flask expone los siguientes endpoints principales:
 
 ## Frontend
 
-El frontend se encuentra en la carpeta `RECETAS-FRONTEND/`. Puedes abrir `RECETAS-FRONTEND/inicio.html` (o `recetas.html`, `login.html`, etc.) directamente en tu navegador para interactuar con la aplicación. Asegúrate de que el servidor Flask esté corriendo para que el frontend pueda comunicarse con el backend.
+El frontend se encuentra en la carpeta `RECETAS-FRONTEND/`. Puedes abrir `RECETAS-FRONTEND/inicio.html` (o `recetas.html`, `login.html`, etc.) directamente en tu navegador para interactuar con la aplicación. 
+
+```bash
+    # Navegar al frontend
+    cd RECETAS-FRONTEND
+
+    # Abrir en navegador (ejemplo)
+    start inicio.html
+```
+Asegúrate de que el servidor Flask esté corriendo para que el frontend pueda comunicarse con el backend.
 
 ---
 

@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const savedUser = localStorage.getItem("currentUser");
   if (savedUser) {
-    showInfo("Sesión ya iniciada", "Ya tienes una sesión activa. Serás redirigido a la página de inicio.");
+    showInfo("Sesión ya iniciada", "Ya tienes una sesión activa. Serás redirigido a la página de inicio.");    
     setTimeout(() => { window.location.href = "inicio.html"; }, 2000);
   }
 });
@@ -29,7 +29,12 @@ async function handleLogin(e) {
   const password = document.getElementById("loginPassword").value.trim();
 
   if (!email || !password) {
-    showError("Campos incompletos", "Por favor, completa tu email y contraseña.");
+    Swal.fire({
+        title: '¡Error!',
+        text: 'Por favor, completa tu email y contraseña.',
+        icon: 'error',
+        showConfirmButton: true
+      });
     return;
   }
 
@@ -37,8 +42,16 @@ async function handleLogin(e) {
   const originalText = submitButton.textContent;
 
   try {
-    submitButton.textContent = "Iniciando sesión...";
-    submitButton.disabled = true;
+    Swal.fire({
+            title: 'Iniciando sesión',
+            text: 'Por favor, espere...',
+            icon: 'info',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
 
     const response = await fetch(`${API_BASE_URL}/auth/login`, {
       method: "POST",
@@ -66,11 +79,21 @@ async function handleLogin(e) {
         }
       });
     } else {
-      showError("Error al iniciar sesión", result.error || "Email o contraseña incorrectos.");
+      Swal.fire({
+        title: '¡Error!',
+        text: 'Email o contraseña incorrectos.',
+        icon: 'error',
+        showConfirmButton: true
+      });
     }
   } catch (error) {
     console.error("Error en login:", error);
-    showError("Error de conexión", "No se pudo conectar con el servidor. Por favor, inténtalo más tarde.");
+    Swal.fire({
+        title: '¡Error!',
+        text: 'No se pudo conectar con el servidor. Por favor, inténtalo más tarde.',
+        icon: 'error',
+        showConfirmButton: true
+      });
   } finally {
     submitButton.textContent = originalText;
     submitButton.disabled = false;
@@ -86,14 +109,24 @@ async function handleRegister(e) {
   const password = DOMPurify.sanitize(document.getElementById("registerPassword").value.trim());
 
   if (!nombre || !email || !password) {
-    showError("Campos incompletos", "Por favor, completa todos los campos para registrarte.");
+    Swal.fire({
+        title: '¡Campos incompletos!',
+        text: 'Por favor, completa todos los campos para registrarte.',
+        icon: 'error',
+        showConfirmButton: true
+      });
     return;
   }
 
   // Validación de contraseña con RegEx como pide la consigna
   const passwordRegex = /^[a-zA-Z0-9!@#$%^&*]{8,20}$/;
   if (!passwordRegex.test(password)) {
-    showError("Contraseña no válida", "La contraseña debe tener entre 8 y 20 caracteres, sin espacios. Puede incluir letras, números y los símbolos !@#$%^&*");
+    Swal.fire({
+        title: '¡Contraseña no válida!',
+        text: 'La contraseña debe tener entre 8 y 20 caracteres, sin espacios. Puede incluir letras, números y los símbolos !@#$%^&*',
+        icon: 'error',
+        showConfirmButton: true
+      });
     return;
   }
 
@@ -101,8 +134,16 @@ async function handleRegister(e) {
   const originalText = submitButton.textContent;
 
   try {
-    submitButton.textContent = "Creando cuenta...";
-    submitButton.disabled = true;
+    Swal.fire({
+            title: 'Creando cuenta',
+            text: 'Por favor, espere...',
+            icon: 'info',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
 
     const response = await fetch(`${API_BASE_URL}/auth/register`, {
       method: "POST",
@@ -135,9 +176,15 @@ async function handleRegister(e) {
     }
   } catch (error) {
     console.error("Error en registro:", error);
-    showError("Error de conexión", "No se pudo conectar con el servidor. Por favor, inténtalo más tarde.");
+    showError("", "No se pudo conectar con el servidor. Por favor, inténtalo más tarde.");
+    Swal.fire({
+        title: '¡Error de conexión!',
+        text: 'No se pudo conectar con el servidor. Por favor, inténtalo más tarde.',
+        icon: 'error',
+        showConfirmButton: true
+      });
   } finally {
     submitButton.textContent = originalText;
     submitButton.disabled = false;
-  }
+  } 
 }

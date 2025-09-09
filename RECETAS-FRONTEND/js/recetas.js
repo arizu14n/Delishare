@@ -541,8 +541,7 @@ async function submitNewRecipe(event) {
     dificultad: recipeDifficulty,
     categoria_id: parseInt(recipeCategory),
     imagen_url: recipeImageUrl,
-    autor: recipeAuthor,
-    es_premium: recipeIsPremium ? 1 : 0, 
+    autor: recipeAuthor
   }
 
   try {
