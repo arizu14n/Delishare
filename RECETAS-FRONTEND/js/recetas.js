@@ -777,7 +777,7 @@ const recipeInstructions = DOMPurify.sanitize(document.getElementById("recipeIns
     return;
   }
 
-  const newRecipeData = {
+const newRecipeData = {
     titulo: recipeTitle,
     descripcion: recipeDescription,
     ingredientes: recipeIngredients,
@@ -787,8 +787,9 @@ const recipeInstructions = DOMPurify.sanitize(document.getElementById("recipeIns
     dificultad: recipeDifficulty,
     categoria_id: parseInt(recipeCategory),
     imagen_url: recipeImageUrl,
-    autor: recipeAuthor
-  }
+    autor: recipeAuthor,
+    es_premium: recipeIsPremium
+}
 
   try {
     const response = await fetch(`${API_BASE_URL}/recetas/`, {

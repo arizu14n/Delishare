@@ -1,11 +1,18 @@
+# Rutas de autenticación: registro e inicio de sesión
 from flask import Blueprint, request, jsonify, abort
+# Manejo de excepciones HTTP
 from werkzeug.exceptions import HTTPException
+# Libreria para validar expesiones regulares en el backend
 import re
+# Biblioteca para hashear contraseñas
 from passlib.context import CryptContext
+# Para manejar fechas
 from datetime import date
+# Sanitización de entradas
 from ..utils import sanitize_input
-
+# Acceso a la base de datos y modelos
 from ..database import get_db_session
+# Modelos Pydantic y SQLAlchemy
 from ..models.usuario import UsuarioCreate, Usuario, UsuarioInDB, UsuarioDB
 
 # Configurar el contexto de hasheo de contraseñas
