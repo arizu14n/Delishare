@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, abort, request
 from sqlalchemy.orm import joinedload
 from typing import Optional
-
+import bleach
 from ..database import get_db_session
 from ..models.receta import Receta, RecetaCreate, RecetaDB
 from ..models.categoria import Categoria, CategoriaDB
@@ -109,7 +109,13 @@ def crear_receta():
         abort(400, description="La solicitud debe ser de tipo JSON.")
         
     try:
-        receta_data = RecetaCreate(**sanitize_input(request.get_json()))
+        import bleach  # DOMPurify is for JS; bleach is the Python equivalent
+        raw_data = request.get_json()
+        # Sanitiza los campos de texto relevantes
+        raw_data['titulo'] = bleach.clean(raw_data.get('titulo', ''))
+        raw_data['ingredientes'] = bleach.clean(raw_data.get('ingredientes', ''))
+        raw_data['instrucciones'] = bleach.clean(raw_data.get('instrucciones', ''))
+        receta_data = RecetaCreate(**raw_data)
     except Exception as e:
         abort(400, description=f"Datos de entrada inválidos: {e}")
 
