@@ -35,16 +35,7 @@ Asegúrate de tener instalado lo siguiente:
     pip install -r requirements.txt
     ```
 
-4.  **Configurar la Base de Datos:**
-    Este paso creará la base de datos `recetas_cocina_prueba` y poblará las tablas con los datos iniciales.
-
-    ```bash
-    python setup_db.py
-    ```
-    *   Si el comando `mysql` no se encuentra, el script te dará instrucciones sobre cómo añadirlo a tu PATH o usar la ruta completa.
-    *   Te pedirá la contraseña de tu usuario de MySQL (si tienes una).
-
-5.  **Ejecutar el Servidor Flask:**
+4.  **Ejecutar el Servidor Flask:**
     Una vez que la base de datos esté configurada, puedes iniciar el servidor Flask.
 
     ```bash
