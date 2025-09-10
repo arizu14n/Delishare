@@ -9,36 +9,11 @@
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
 </head>
 
 <body>
-    <header class="header">
-        <nav class="navbar">
-            <div class="nav-container">
-                <h1 class="logo">
-                    <a href="inicio.html" class="logo-link">
-                        <img src="Imagenes/Logo.png" alt="Logo Recetas Premium">
-                    </a>
-                    Delishare
-                </h1>
-                <div class="nav-menu">
-                    <a href="inicio.html" class="nav-link active">Inicio</a>
-                    <a href="recetas.html" class="nav-link">Recetas</a>
-                    <a href="suscripcion.html" class="nav-link">Suscripción</a>
-                    <div class="auth-buttons" id="authButtons">
-                        <button class="btn-login" onclick="window.location.href='login.html'">Iniciar Sesión</button>
-                        <button class="btn-register"
-                            onclick="window.location.href='registrar.html'">Registrarse</button>
-                    </div>
-                </div>
-                <div class="user-menu" id="userMenu" style="display: none;">
-                    <span class="user-name" id="userName"></span>
-                    <span class="user-badge" id="userBadge"></span>
-                    <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
-                </div>
-            </div>
-        </nav>
-    </header>
     <main>
         <section class="hero">
             <div class="hero-content">
@@ -106,35 +81,11 @@
         </section>
     </main>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>Delishare</h4>
-                    <p>Tu cocina, nuestros secretos. Descubrí el mundo de la gastronomía profesional.</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Enlaces</h4>
-                    <a href="inicio.html">Inicio</a>
-                    <a href="recetas.html">Recetas</a>
-                    <a href="suscripcion.html">Suscripción</a>
-                </div>
-                <div class="footer-section">
-                    <h4>Soporte</h4>
-                    <a href="#">Ayuda</a>
-                    <a href="#">Contacto</a>
-                    <a href="#">Términos</a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 Delishare. Todos los derechos reservados.</p>
-            </div>
-    </footer>
-
     <script src="js/shared.js"></script>
     <script src="js/inicio.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-
+    <script src="js/header.js"></script>
+    <script src="js/footer.js"></script>
 </body>
 
 </html>

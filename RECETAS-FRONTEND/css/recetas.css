@@ -1,3 +1,23 @@
+/* Variables CSS actualizadas */
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #00b894;
+  --accent-color: #55efc4;
+  --premium-color: #f39c12;
+  --dark-color: #1a252f;
+  --light-color: #ecf0f1;
+  --white: #ffffff;
+  --black: #2c3e50;
+  --gray-light: #bdc3c7;
+  --gray-dark: #7f8c8d;
+  --success-color: #27ae60;
+  --warning-color: #e74c3c;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-hover: 0 8px 15px rgba(0, 0, 0, 0.15);
+  --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  --gradient-premium: linear-gradient(135deg, var(--premium-color), #e67e22);
+}
+
 /* Estructura principal de la página */
 html, body {
     height: 100%;
@@ -14,30 +34,6 @@ body {
 main {
     flex: 1 0 auto;
     width: 100%;
-}
-
-/* Filtros */
-.filters {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.filter-select {
-  padding: 0.8rem 1.5rem;
-  border: 2px solid var(--gray-light);
-  border-radius: 25px;
-  background-color: var(--white);
-  font-size: 1rem;
-  cursor: pointer;
-  transition: border-color 0.3s ease;
-}
-
-.filter-select:focus {
-  outline: none;
-  border-color: var(--secondary-color);
 }
 
 /* Grid de Recetas */
@@ -672,4 +668,264 @@ main {
 
 .editing-mode .btn-step-add:hover {
     background: #218838;
+}
+
+/* Estilos mejorados para la paginación */
+.pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, var(--light-color) 0%, var(--light-gray) 100%);
+    border-radius: 15px;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.pagination-info {
+    font-weight: 700;
+    color: var(--text-dark);
+    font-size: 1.1rem;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.pagination-buttons {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.btn-pagination {
+    padding: 0.8rem 1.5rem;
+    background: var(--white);
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: var(--shadow);
+}
+
+.btn-pagination:hover:not(:disabled) {
+    background: var(--primary-color);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.btn-pagination:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.page-numbers {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.page-number {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    background: var(--white);
+    color: var(--primary-color);
+}
+
+.page-number:hover {
+    background: var(--primary-color);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+.page-number.active {
+    background: var(--primary-color);
+    color: var(--white);
+    transform: scale(1.1);
+    box-shadow: var(--shadow);
+}
+
+.page-number.ellipsis {
+    border: none;
+    cursor: default;
+    background: transparent;
+    width: auto;
+}
+
+.page-number.ellipsis:hover {
+    background: transparent;
+    color: inherit;
+    transform: none;
+}
+
+/* Estilos para los grupos de filtros */
+.filters {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, var(--light-color) 0%, var(--light-gray) 100%);
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--gray-light);
+}
+
+/* Estilos mejorados para los combos (select) */
+.filter-select {
+    padding: 1rem 1.5rem;
+    border: 2px solid var(--gray-light);
+    border-radius: 12px;
+    background-color: var(--white);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    appearance: none; 
+    background-color: var(--white);
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1.2rem;
+    padding-right: 3rem;
+    box-shadow: var(--shadow);
+    min-width: 200px;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    transform: translateY(-2px);
+}
+
+.filter-select:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+/* Estilos responsive */
+@media (max-width: 768px) {
+    .pagination-controls {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.2rem;
+    }
+    
+    .page-numbers {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .btn-pagination {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.9rem;
+    }
+    
+    .page-number {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+    }
+    
+    .filters {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.2rem;
+    }
+    
+    .filter-select {
+        width: 100%;
+        max-width: 300px;
+        min-width: unset;
+    }
+}
+
+/* Efectos de transición suaves */
+.recipe-card,
+.filter-select,
+.btn-pagination,
+.page-number {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Mejora visual para el estado de loading */
+.loading {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    color: var(--gray-dark);
+    font-size: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.loading::before {
+    content: "";
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--gray-light);
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Estilos para el search container mejorados */
+.search-container {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#searchInput {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    border: 2px solid var(--gray-light);
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow);
+}
+
+#searchInput:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    transform: translateY(-2px);
+}
+
+#searchBtn {
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+#searchBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
 }

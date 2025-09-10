@@ -1,48 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Delishare</title>
-    <link rel="stylesheet" href="css/styles.css">
     <link rel="icon" type="image/png" href="imagenes/Logo.png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/recetas.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
-    <header class="header">
-        <nav class="navbar">
-            <div class="nav-container">
-                <h1 class="logo">
-                    <a href="inicio.html" class="logo-link">
-                        <img src="Imagenes/Logo.png" alt="Logo Recetas Premium">
-                    </a>
-                    Delishare
-                </h1>
-                <div class="nav-menu">
-                    <a href="inicio.html" class="nav-link">Inicio</a>
-                    <a href="recetas.html" class="nav-link active">Recetas</a>
-                    <a href="suscripcion.html" class="nav-link">Suscripción</a>
-                    <div class="auth-buttons" id="authButtons">
-                        <button class="btn-login" onclick="window.location.href='login.html'">Iniciar Sesión</button>
-                        <button class="btn-register"
-                            onclick="window.location.href='registrar.html'">Registrarse</button>
-                    </div>
-                </div>
-                <div class="user-menu" id="userMenu" style="display: none;">
-                    <span class="user-name" id="userName"></span>
-                    <span class="user-badge" id="userBadge"></span>
-                    <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
-                </div>
-            </div>
-        </nav>
-    </header>
     <main>
         <!-- Sección de Recetas -->
         <section class="recipes-section">
             <div class="container">
                 <h2 class="section-title">Nuestras Recetas</h2>
+
                 <!-- Barra de búsqueda -->
                 <div class="search-container" style="margin-bottom: 2rem;">
                     <input type="text" id="searchInput" placeholder="Buscar recetas...">
@@ -50,6 +28,7 @@
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
+
                 <!-- Filtros -->
                 <div class="filters">
                     <select id="categoryFilter" class="filter-select">
@@ -67,10 +46,39 @@
                         <option value="premium">Solo premium</option>
                     </select>
                 </div>
+
+                <!-- Controles de paginación (superior) -->
+                <div class="pagination-controls" id="paginationTop">
+                    <div class="pagination-info" id="paginationInfoTop">Mostrando 1-9 de 0 recetas</div>
+                    <div class="pagination-buttons">
+                        <button class="btn-pagination" id="prevPageBtn" disabled>
+                            <i class="fas fa-chevron-left"></i> Anterior
+                        </button>
+                        <div class="page-numbers" id="pageNumbersTop"></div>
+                        <button class="btn-pagination" id="nextPageBtn" disabled>
+                            Siguiente <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
                 <!-- Grid de Recetas -->
                 <div id="recipesGrid" class="recipes-grid">
                     <div class="loading">
                         Cargando recetas...
+                    </div>
+                </div>
+
+                <!-- Controles de paginación (inferior) -->
+                <div class="pagination-controls" id="paginationBottom">
+                    <div class="pagination-info" id="paginationInfoBottom">Mostrando 1-9 de 0 recetas</div>
+                    <div class="pagination-buttons">
+                        <button class="btn-pagination" id="prevPageBtnBottom" disabled>
+                            <i class="fas fa-chevron-left"></i> Anterior
+                        </button>
+                        <div class="page-numbers" id="pageNumbersBottom"></div>
+                        <button class="btn-pagination" id="nextPageBtnBottom" disabled>
+                            Siguiente <i class="fas fa-chevron-right"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -82,7 +90,7 @@
         <div class="modal-content recipe-modal-content">
             <span class="close" onclick="closeModal('recipeModal')">&times;</span>
             <div id="modalContent">
-                
+
             </div>
         </div>
     </div>
@@ -91,32 +99,39 @@
         <div class="modal-content add-recipe-modal-content">
             <span class="close" onclick="closeModal('addRecipeModal')">&times;</span>
             <h2>Agregar Nueva Receta</h2>
+
             <form id="addRecipeForm">
                 <div class="form-group">
                     <label for="recipeTitle">Título de la Receta:</label>
-                    <input type="text" id="recipeTitle" required pattern=".{5,100}" title="El título debe tener entre 5 y 100 caracteres.">
+                    <input type="text" id="recipeTitle" required pattern=".{5,100}"
+                        title="El título debe tener entre 5 y 100 caracteres.">
                 </div>
+                
                 <div class="form-group">
                     <label for="recipeDescription">Descripción:</label>
                     <textarea id="recipeDescription" rows="3" maxlength="500"></textarea>
                 </div>
+
                 <!-- Ingredientes con entrada paso a paso -->
                 <div class="form-group">
                     <label>Ingredientes:</label>
                     <div class="step-input-container">
-                        <input type="text" id="ingredientInput" placeholder="Agregar un ingrediente (ej: 2 tazas de harina)" class="step-input">
+                        <input type="text" id="ingredientInput"
+                            placeholder="Agregar un ingrediente (ej: 2 tazas de harina)" class="step-input">
                         <button type="button" id="addIngredientBtn" class="btn-step-add">
                             <i class="fas fa-plus"></i> Agregar
                         </button>
                     </div>
                     <div id="ingredientsList" class="items-list"></div>
                     <input type="hidden" id="recipeIngredients" name="recipeIngredients">
-                </div>                
+                </div>
+
                 <!-- Instrucciones con entrada paso a paso -->
                 <div class="form-group">
                     <label>Instrucciones:</label>
                     <div class="step-input-container">
-                        <input type="text" id="instructionInput" placeholder="Agregar un paso (ej: Precalentar el horno a 180°C)" class="step-input">
+                        <input type="text" id="instructionInput"
+                            placeholder="Agregar un paso (ej: Precalentar el horno a 180°C)" class="step-input">
                         <button type="button" id="addInstructionBtn" class="btn-step-add">
                             <i class="fas fa-plus"></i> Agregar
                         </button>
@@ -124,14 +139,17 @@
                     <div id="instructionsList" class="items-list"></div>
                     <input type="hidden" id="recipeInstructions" name="recipeInstructions">
                 </div>
+
                 <div class="form-group">
                     <label for="recipePrepTime">Tiempo de Preparación (Máx. 240 minutos):</label>
                     <input type="number" id="recipePrepTime" min="1" max="240" required>
                 </div>
+
                 <div class="form-group">
                     <label for="recipeServings">Porciones: (Máx: 20)</label>
                     <input type="number" id="recipeServings" min="1" max="20" required>
                 </div>
+
                 <div class="form-group">
                     <label for="recipeDifficulty">Dificultad:</label>
                     <select id="recipeDifficulty" required>
@@ -140,55 +158,36 @@
                         <option value="Difícil">Difícil</option>
                     </select>
                 </div>
+
                 <div class="form-group">
                     <label for="recipeCategory">Categoría:</label>
                     <select id="recipeCategory" required>
-                        </select>
+                    </select>
                 </div>
+
                 <div class="form-group">
                     <label for="recipeImageUrl">URL de la Imagen:</label>
                     <input type="url" id="recipeImageUrl" maxlength="500">
                 </div>
+
                 <div class="form-group">
                     <label for="recipeAuthor">Autor:</label>
-                    <input type="text" id="recipeAuthor" required pattern=".{3,100}" title="El autor debe tener entre 3 y 100 caracteres.">
+                    <input type="text" id="recipeAuthor" required pattern=".{3,100}"
+                        title="El autor debe tener entre 3 y 100 caracteres.">
                 </div>
+
                 <div class="form-group checkbox-group">
                     <input type="checkbox" id="recipeIsPremium">
                     <label for="recipeIsPremium">Marcar como Premium</label>
                 </div>
+
                 <button type="submit" class="btn-primary">Agregar Receta</button>
             </form>
         </div>
     </div>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>Delishare</h4>
-                    <p>Tu cocina, nuestros secretos. Descubrí el mundo de la gastronomía profesional.</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Enlaces</h4>
-                    <a href="inicio.html">Inicio</a>
-                    <a href="recetas.html">Recetas</a>
-                    <a href="suscripcion.html">Suscripción</a>
-                </div>
-                <div class="footer-section">
-                    <h4>Soporte</h4>
-                    <a href="#">Ayuda</a>
-                    <a href="#">Contacto</a>
-                    <a href="#">Términos</a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 Delishare. Todos los derechos reservados.</p>
-            </div>
-        </div>
-    </footer>
-
-
+    <script src="js/header.js"></script>
+    <script src="js/footer.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify@2.3.8/dist/purify.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <script src="js/shared.js"></script>
